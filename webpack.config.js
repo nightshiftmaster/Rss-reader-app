@@ -1,7 +1,6 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const autoprefixer = require('autoprefixer');
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -15,7 +14,7 @@ module.exports = {
   },
   plugins: [
     new HTMLWebpackPlugin({
-      template: path.resolve(__dirname, 'template.html'),
+      template: path.resolve(__dirname, 'index.html'),
     }),
     new CleanWebpackPlugin(),
   ],
