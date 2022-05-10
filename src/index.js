@@ -1,7 +1,7 @@
-const app = () => {
-   // const head = document.querySelector('h1')
-   // head.textContent = 'vlad pidor'
-   // console.log(head)
-}
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-app()
+const app = () => {
+  const head = document.querySelector('h1');
+  head.textContent = 'RSS агрегатор';
+};
+app();
