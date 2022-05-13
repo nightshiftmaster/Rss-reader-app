@@ -17,6 +17,8 @@ const errorsHandler = (elements, error) => {
     feedbackElement.classList.remove('text-danger');
     feedbackElement.classList.add('text-success');
     feedbackElement.textContent = 'RSS успешно загружен';
+    elements.form.reset();
+    elements.inputField.focus();
   }
 };
 

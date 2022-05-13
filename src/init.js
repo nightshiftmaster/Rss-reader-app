@@ -46,8 +46,6 @@ export default () => {
     const feed = _.isEmpty(error) ? value : [];
     watchState.form.errors = watchState.form.feeds.includes(feed) ? 'double' : validated(feed);
     watchState.form.feeds.push(feed);
-    elements.form.reset();
-    elements.inputField.focus();
     watchState.form.processState = 'filling';
   });
 };
