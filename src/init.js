@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as yup from 'yup';
 import _ from 'lodash';
+import i18n from 'i18next';
+import resources from './locales/index';
 import initView from './view';
 
 const validated = (field) => {
@@ -14,6 +16,12 @@ const validated = (field) => {
 };
 
 export default () => {
+  const i18instance = i18n.createInstance();
+  i18instance.init({
+    lng: 'ru',
+    resources,
+  }).then((t) => { t('key'); });
+
   const elements = {
     form: document.querySelector('form'),
     submitButton: document.querySelector('button'),
@@ -30,7 +38,7 @@ export default () => {
     },
   };
 
-  const watchState = initView(state, elements);
+  const watchState = initView(state, elements, i18instance);
 
   elements.inputField.addEventListener('change', (e) => {
     e.preventDefault();
