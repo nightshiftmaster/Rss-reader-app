@@ -2,13 +2,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import * as yup from 'yup';
 import _ from 'lodash';
 import i18n from 'i18next';
+import { setLocale } from 'yup';
 import resources from './locales/index';
 import initView from './view';
+import insertResponceData from './parser/index';
 
-const validated = (field) => {
-  const schema = yup.string().url().nullable();
+const validated = async (field, watchState) => {
+  setLocale({
+    string: {
+      url: 'feedbacks.invalid_url',
+    },
+  });
+  const schema = yup.string().url().nullable().notOneOf([watchState.form.feeds], 'feedbacks.doubles_alert');
   try {
-    schema.validateSync(field);
+    await schema.validate(field);
     return '';
   } catch (e) {
     return e.message;
@@ -23,23 +30,25 @@ export default () => {
   }).then((t) => { t('key'); });
 
   const elements = {
+    feedsContainer: document.querySelector('.feeds'),
+    postsContainer: document.querySelector('.posts'),
     form: document.querySelector('form'),
-    submitButton: document.querySelector('button'),
+    submitButton: document.querySelector('[type="submit"]'),
     inputField: document.querySelector('input'),
     feedbackElement: document.querySelector('.feedback'),
   };
 
   const state = {
     form: {
+      isValidValue: true,
       processState: 'filling',
-      errors: {},
+      feedbackMessage: {},
       input: '',
       feeds: [],
     },
   };
 
   const watchState = initView(state, elements, i18instance);
-
   elements.inputField.addEventListener('change', (e) => {
     e.preventDefault();
     const { value } = e.target;
@@ -48,12 +57,39 @@ export default () => {
 
   elements.form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    watchState.form.processState = 'sending';
+    let { isValidValue } = watchState.form;
     const value = watchState.form.input;
-    const error = validated(value);
-    const feed = _.isEmpty(error) ? value : [];
-    watchState.form.errors = watchState.form.feeds.includes(feed) ? 'double' : validated(feed);
-    watchState.form.feeds.push(feed);
-    watchState.form.processState = 'filling';
+    const error = await validated(value, watchState);
+    isValidValue = _.isEmpty(error);
+    watchState.form.feedbackMessage = error;
+    if (isValidValue) {
+      elements.feedbackElement.textContent = '';
+      watchState.form.processState = 'sending';
+      fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(value)}`).catch((err) => {
+        watchState.form.feedbackMessage = 'feedbacks.network_error';
+        watchState.form.processState = 'filling';
+        console.log(err);
+      })
+        .then((response) => response.json())
+        .catch((err2) => {
+          watchState.form.feedbackMessage = 'feedbacks.network_error';
+          watchState.form.processState = 'filling';
+          console.log(err2);
+        })
+        .then((responce) => {
+          const statusError = responce.status.error;
+          const status = responce.status.http_code;
+          const result = status !== 404 && !statusError ? [
+            insertResponceData(responce, i18instance),
+            watchState.form.feeds.push(value),
+            watchState.form.processState = 'finished',
+            watchState.form.feedbackMessage = 'feedbacks.upload_success',
+          ]
+            : [watchState.form.feedbackMessage = 'feedbacks.non_valid_rss',
+              watchState.form.processState = 'filling'];
+          return result;
+        })
+        .catch(console.log);
+    }
   });
 };
