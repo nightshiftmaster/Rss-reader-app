@@ -1,4 +1,17 @@
 import onChange from 'on-change';
+import builders from './tools/index';
+import normalizeData from './tools/normalize';
+import makeParse from './tools/parser';
+
+const { buildFeedsAndPosts, modalWindowBuilder } = builders;
+
+const responceDataHandler = (responce, elements, i18Instance) => {
+  const parsedData = makeParse(responce.contents);
+  const normalizedData = normalizeData(parsedData);
+  const postsAndFeeds = buildFeedsAndPosts(normalizedData, i18Instance);
+  const modalWindow = modalWindowBuilder(elements, normalizedData, i18Instance);
+  return [postsAndFeeds, modalWindow];
+};
 
 const errorsHandler = (elements, error, i18Instance) => {
   const { feedbackElement } = elements;
@@ -74,6 +87,10 @@ const initView = (state, elements, i18instance) => onChange(state, (path, curr) 
 
     case 'form.feedbackMessage':
       errorsHandler(elements, curr, i18instance);
+      break;
+
+    case 'responceData':
+      responceDataHandler(curr, elements, i18instance);
       break;
 
     default:

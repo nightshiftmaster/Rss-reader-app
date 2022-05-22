@@ -17,6 +17,8 @@ export default {
     },
     buttons: {
       description_window: 'view',
+      open_article: 'read full article',
+      close_article: 'close',
     },
   },
 };

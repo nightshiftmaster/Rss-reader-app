@@ -17,6 +17,8 @@ export default {
     },
     buttons: {
       description_window: 'Просмотр',
+      open_article: 'Читать полностью ',
+      close_article: 'Закрыть',
     },
   },
 };

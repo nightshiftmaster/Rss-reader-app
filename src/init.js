@@ -5,7 +5,6 @@ import i18n from 'i18next';
 import { setLocale } from 'yup';
 import resources from './locales/index';
 import initView from './view';
-import insertResponceData from './parser/index';
 
 const validated = async (field, watchState) => {
   setLocale({
@@ -30,6 +29,14 @@ export default () => {
   }).then((t) => { t('key'); });
 
   const elements = {
+    modalWindowElements: {
+      modalHeader: document.querySelector('.modal-title'),
+      modalBody: document.querySelector('.modal-body'),
+      modalControl: {
+        closeModal: document.querySelectorAll('[data-bs-dismiss="modal"]'),
+        fullArticle: document.querySelector('.full-article'),
+      },
+    },
     feedsContainer: document.querySelector('.feeds'),
     postsContainer: document.querySelector('.posts'),
     form: document.querySelector('form'),
@@ -46,6 +53,7 @@ export default () => {
       input: '',
       feeds: [],
     },
+    responceData: null,
   };
 
   const watchState = initView(state, elements, i18instance);
@@ -80,7 +88,7 @@ export default () => {
           const statusError = responce.status.error;
           const status = responce.status.http_code;
           const result = status !== 404 && !statusError ? [
-            insertResponceData(responce, i18instance),
+            watchState.responceData = responce,
             watchState.form.feeds.push(value),
             watchState.form.processState = 'finished',
             watchState.form.feedbackMessage = 'feedbacks.upload_success',
