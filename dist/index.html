@@ -4,11 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title></title>
-  <script defer src="main.77f20bae34a7f8863f5e.js"></script></head>
-  <body
-    class="d-flex flex-column min-vh-100"
-    style="overflow: hidden; padding-right: 0px"
-  >
+  <script defer src="main.83c6c20c40899ef43a9c.js"></script></head>
+  <body class="d-flex flex-column min-vh-100">
     <div
       class="modal fade"
       id="modal"
@@ -59,8 +56,14 @@
                 <div class="col">
                   <div class="form-floating">
                     <input
+                      id="url-input"
+                      autofocus=""
+                      required=""
+                      name="url"
+                      aria-label="url"
                       class="form-control w-100"
                       placeholder="ссылка RSS"
+                      autocomplete="off"
                     />
                     <label for="url-input">Ссылка RSS</label>
                   </div>
@@ -103,5 +106,10 @@
         </div>
       </section>
     </main>
+    <footer class="footer border-top py-3 mt-5 bg-light">
+      <div class="container-xl">
+        <div class="text-center">created by Vlad</div>
+      </div>
+    </footer>
   </body>
 </html>

@@ -3,14 +3,27 @@ import builders from './tools/index';
 import normalizeData from './tools/normalize';
 import makeParse from './tools/parser';
 
-const { buildFeedsAndPosts, modalWindowBuilder } = builders;
+const { feedsListBuilder, postsListBuilder, modalWindowBuilder } = builders;
 
-const responceDataHandler = (responce, elements, i18Instance) => {
-  const parsedData = makeParse(responce.contents);
-  const normalizedData = normalizeData(parsedData);
-  const postsAndFeeds = buildFeedsAndPosts(normalizedData, i18Instance);
+const responceDataHandler = (responce, state, elements, i18Instance) => {
+  const parsedData = makeParse(responce);
+  const normalizedData = normalizeData(parsedData, state);
+  const feedsList = feedsListBuilder(normalizedData);
+  const postsList = postsListBuilder(normalizedData, i18Instance);
   const modalWindow = modalWindowBuilder(elements, normalizedData, i18Instance);
-  return [postsAndFeeds, modalWindow];
+  return [feedsList, postsList, modalWindow];
+};
+
+const newPostsDataHandler = (responce, state, elements, i18Instance) => {
+  const parsedData = makeParse(responce);
+  const normalizedData = normalizeData(parsedData, state);
+  const postsList = postsListBuilder(normalizedData, i18Instance);
+  const modalWindow = modalWindowBuilder(elements, normalizedData, i18Instance);
+  return [postsList, modalWindow];
+};
+
+const processErrorHandler = (message) => {
+  console.log(message);
 };
 
 const errorsHandler = (elements, error, i18Instance) => {
@@ -90,7 +103,15 @@ const initView = (state, elements, i18instance) => onChange(state, (path, curr) 
       break;
 
     case 'responceData':
-      responceDataHandler(curr, elements, i18instance);
+      responceDataHandler(curr, state, elements, i18instance);
+      break;
+
+    case 'newPostsData':
+      newPostsDataHandler(curr, state, elements, i18instance);
+      break;
+
+    case 'form.processError':
+      processErrorHandler(curr);
       break;
 
     default:

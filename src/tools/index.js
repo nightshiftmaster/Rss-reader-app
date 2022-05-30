@@ -1,3 +1,3 @@
-import { buildFeedsAndPosts, modalWindowBuilder } from './builders';
+import { feedsListBuilder, postsListBuilder, modalWindowBuilder } from './builders';
 
-export default { buildFeedsAndPosts, modalWindowBuilder };
+export default { feedsListBuilder, postsListBuilder, modalWindowBuilder };
