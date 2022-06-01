@@ -10,7 +10,10 @@ export const modalWindowBuilder = (elements, normalizedData, i18Instance) => {
   modalElementsList.forEach((button) => {
     button.addEventListener('click', (e) => {
       const { target } = e;
-      fullArticle.href = target.previousElementSibling.href;
+      const targetElement = target.previousElementSibling;
+      targetElement.classList.remove('fw-bold');
+      targetElement.classList.add('fw-normal', 'link-secondary');
+      fullArticle.href = targetElement.href;
       const postId = target.dataset.id;
       const elementData = normalizedData.posts.find((element) => element.dataId === postId);
       if (elementData === undefined) {
@@ -36,9 +39,9 @@ export const modalWindowBuilder = (elements, normalizedData, i18Instance) => {
   });
 };
 
-export const postsListBuilder = (elements, i18Instance) => {
-  const container = document.querySelector('.posts .list-group');
-  const list = elements.posts.map((post) => {
+export const postsListBuilder = (normalizedData, elements, i18Instance) => {
+  const { postsList } = elements.containers.posts;
+  const list = normalizedData.posts.map((post) => {
     const { dataId } = post;
     const listElement = document.createElement('li');
     const aElement = document.createElement('a');
@@ -59,20 +62,19 @@ export const postsListBuilder = (elements, i18Instance) => {
     listElement.append(button);
     return listElement;
   });
-  container.append(...list);
+  postsList.append(...list);
 };
 
-export const feedsListBuilder = (data) => {
-  const container1 = document.querySelector('.feeds .list-group');
+export const feedsListBuilder = (normalizeData, elements) => {
+  const { feedsList } = elements.containers.feeds;
   const li = document.createElement('li');
   li.classList.add('list-group-item', 'border-0', 'border-end-0');
   const header = document.createElement('h3');
   header.classList.add('h6', 'm-0');
-  header.textContent = data.title;
+  header.textContent = normalizeData.title;
   const paragraph = document.createElement('p');
   paragraph.classList.add('m-0', 'small', 'text-black-50');
-  paragraph.textContent = data.description;
+  paragraph.textContent = normalizeData.description;
   li.append(header, paragraph);
-  container1.append(li);
-  return container1;
+  feedsList.append(li);
 };

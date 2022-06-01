@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import onChange from 'on-change';
 import builders from './tools/index';
 import normalizeData from './tools/normalize';
@@ -8,8 +9,8 @@ const { feedsListBuilder, postsListBuilder, modalWindowBuilder } = builders;
 const responceDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
-  const feedsList = feedsListBuilder(normalizedData);
-  const postsList = postsListBuilder(normalizedData, i18Instance);
+  const feedsList = feedsListBuilder(normalizedData, elements);
+  const postsList = postsListBuilder(normalizedData, elements, i18Instance);
   const modalWindow = modalWindowBuilder(elements, normalizedData, i18Instance);
   return [feedsList, postsList, modalWindow];
 };
@@ -17,7 +18,7 @@ const responceDataHandler = (responce, state, elements, i18Instance) => {
 const newPostsDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
-  const postsList = postsListBuilder(normalizedData, i18Instance);
+  const postsList = postsListBuilder(normalizedData, elements, i18Instance);
   const modalWindow = modalWindowBuilder(elements, normalizedData, i18Instance);
   return [postsList, modalWindow];
 };
@@ -26,32 +27,32 @@ const processErrorHandler = (message) => {
   console.log(message);
 };
 
-const errorsHandler = (elements, error, i18Instance) => {
+const feedbackMessagesHandler = (elements, message, i18Instance) => {
   const { feedbackElement } = elements;
-  switch (error) {
+  switch (message) {
     case 'feedbacks.doubles_alert':
       elements.inputField.classList.add('is-invalid');
       feedbackElement.classList.add('text-danger');
       feedbackElement.classList.remove('text-success');
-      feedbackElement.textContent = i18Instance.t(error);
+      feedbackElement.textContent = i18Instance.t(message);
       break;
     case 'feedbacks.invalid_url':
       elements.inputField.classList.add('is-invalid');
       feedbackElement.classList.add('text-danger');
       feedbackElement.classList.remove('text-success');
-      feedbackElement.textContent = i18Instance.t(error);
+      feedbackElement.textContent = i18Instance.t(message);
       break;
     case 'feedbacks.non_valid_rss':
       elements.inputField.classList.add('is-invalid');
       feedbackElement.classList.add('text-danger');
       feedbackElement.classList.remove('text-success');
-      feedbackElement.textContent = i18Instance.t(error);
+      feedbackElement.textContent = i18Instance.t(message);
       break;
     case 'feedbacks.network_error':
       elements.inputField.classList.add('is-invalid');
       feedbackElement.classList.add('text-danger');
       feedbackElement.classList.remove('text-success');
-      feedbackElement.textContent = i18Instance.t(error);
+      feedbackElement.textContent = i18Instance.t(message);
       break;
     case 'feedbacks.upload_success':
       elements.inputField.classList.remove('is-invalid');
@@ -67,9 +68,11 @@ const errorsHandler = (elements, error, i18Instance) => {
 };
 
 const processStateHandler = (elements, process, i18instance) => {
-  const { submitButton, feedsContainer, postsContainer } = elements;
-  const postContainerTitle = postsContainer.querySelector('h2');
-  const feedsContainerTitle = feedsContainer.querySelector('h2');
+  const { submitButton } = elements;
+  const { postsColumn } = elements.containers.posts;
+  const { feedsColumn } = elements.containers.feeds;
+  const postContainerTitle = postsColumn.querySelector('h2');
+  const feedsContainerTitle = feedsColumn.querySelector('h2');
   switch (process) {
     case 'filling':
       submitButton.disabled = false;
@@ -83,8 +86,8 @@ const processStateHandler = (elements, process, i18instance) => {
       postContainerTitle.textContent = i18instance.t('containers.postsContainer_title');
       feedsContainerTitle.textContent = i18instance.t('containers.feedsContainer_title');
       submitButton.disabled = false;
-      feedsContainer.hidden = false;
-      postsContainer.hidden = false;
+      postsColumn.hidden = false;
+      feedsColumn.hidden = false;
       break;
 
     default:
@@ -99,14 +102,14 @@ const initView = (state, elements, i18instance) => onChange(state, (path, curr) 
       break;
 
     case 'form.feedbackMessage':
-      errorsHandler(elements, curr, i18instance);
+      feedbackMessagesHandler(elements, curr, i18instance);
       break;
 
-    case 'responceData':
+    case 'data.responceData':
       responceDataHandler(curr, state, elements, i18instance);
       break;
 
-    case 'newPostsData':
+    case 'data.newPostsData':
       newPostsDataHandler(curr, state, elements, i18instance);
       break;
 

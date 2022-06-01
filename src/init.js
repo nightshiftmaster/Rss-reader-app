@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-param-reassign */
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as yup from 'yup';
 import _ from 'lodash';
@@ -6,17 +8,32 @@ import { setLocale } from 'yup';
 import resources from './locales/index';
 import initView from './view';
 
-const getNewPosts = (watchState, link) => {
+const feedbackMessages = {
+  uploadSuccess: 'feedbacks.upload_success',
+  nonValidRss: 'feedbacks.non_valid_rss',
+  netWorkError: 'feedbacks.network_error',
+  doublesAlert: 'feedbacks.doubles_alert',
+};
+
+const errorMessages = {
+  network: {
+    error: 'Network Problems. Try again.',
+  },
+};
+
+const getNewPosts = (watchState, link, delay) => {
   setTimeout(() => {
     fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
       .then((response) => response.json())
-      .then((responce) => watchState.newPostsData = responce)
+      .then((responce) => {
+        watchState.data.newPostsData = responce;
+      })
       .catch((err) => {
-        watchState.form.processError = 'Network Error';
+        watchState.form.processError = errorMessages.network.error;
         throw err;
       });
-    getNewPosts(watchState, link);
-  }, 5000);
+    getNewPosts(watchState, link, delay);
+  }, delay);
 };
 
 const processData = (watchState, value) => {
@@ -26,20 +43,20 @@ const processData = (watchState, value) => {
       const statusError = responce.status.error;
       const status = responce.status.http_code;
       const result = status !== 404 && !statusError ? [
-        watchState.currentLink = value,
-        watchState.responceData = responce,
-        watchState.form.feeds.push(value),
+        watchState.form.currentLink = value,
+        watchState.data.responceData = responce,
+        watchState.data.linksHistory.push(value),
         watchState.form.processState = 'finished',
-        watchState.form.feedbackMessage = 'feedbacks.upload_success',
-        getNewPosts(watchState, watchState.currentLink),
+        watchState.form.feedbackMessage = feedbackMessages.uploadSuccess,
+        getNewPosts(watchState, watchState.form.currentLink, 5000),
 
       ]
-        : [watchState.form.feedbackMessage = 'feedbacks.non_valid_rss',
+        : [watchState.form.feedbackMessage = feedbackMessages.nonValidRss,
           watchState.form.processState = 'filling'];
       return result;
     })
     .catch((err) => {
-      watchState.form.feedbackMessage = 'feedbacks.network_error';
+      watchState.form.feedbackMessage = feedbackMessages.netWorkError;
       watchState.form.processState = 'filling';
       console.log(err);
     });
@@ -53,7 +70,7 @@ const validated = async (field, watchState) => {
   });
   const schema = yup.string().required().url()
     .nullable()
-    .notOneOf([watchState.form.feeds], 'feedbacks.doubles_alert');
+    .notOneOf([watchState.form.linksHistory], feedbackMessages.doublesAlert);
   try {
     await schema.validate(field);
     return '';
@@ -78,8 +95,16 @@ export default () => {
         fullArticle: document.querySelector('.full-article'),
       },
     },
-    feedsContainer: document.querySelector('.feeds'),
-    postsContainer: document.querySelector('.posts'),
+    containers: {
+      posts: {
+        postsColumn: document.querySelector('.posts'),
+        postsList: document.querySelector('.posts .list-group'),
+      },
+      feeds: {
+        feedsColumn: document.querySelector('.feeds'),
+        feedsList: document.querySelector('.feeds .list-group'),
+      },
+    },
     form: document.querySelector('form'),
     submitButton: document.querySelector('[type="submit"]'),
     inputField: document.querySelector('input'),
@@ -92,14 +117,15 @@ export default () => {
       processState: 'filling',
       feedbackMessage: {},
       input: '',
-      feeds: [],
+      currentLink: '',
       processError: '',
     },
-    responceData: null,
-    newPostsData: null,
-    currentLink: null,
-    postColl: [],
-    feedsColl: null,
+    data: {
+      responceData: null,
+      newPostsData: null,
+      postsHistory: [],
+      linksHistory: [],
+    },
   };
 
   const watchState = initView(state, elements, i18instance);
