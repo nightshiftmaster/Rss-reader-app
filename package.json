@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "rss agregator",
   "main": "index.js",
-  "jest": {
-    "testEnvironment": "jsdom"
-  },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/.bin/jest"
   },
@@ -35,8 +32,6 @@
     "eslint-plugin-import": "^2.26.0",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^28.1.0",
-    "jest-environment-jsdom": "^28.1.0",
-    "jsdom": "^19.0.0",
     "postcss-loader": "^6.2.1",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
