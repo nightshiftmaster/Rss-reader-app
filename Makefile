@@ -1,8 +1,8 @@
 install: 
 	  npm ci
 
-buid: 
-	  npm run-script build
+build: 
+	  npm run build --if-present
 
 lint:
 	  npx eslint .
