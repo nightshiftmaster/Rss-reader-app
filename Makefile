@@ -1,5 +1,5 @@
 install: 
-	  npm install
+	  npm ci
 
 buid: 
 	  npm run build --if-present
