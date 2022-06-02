@@ -5,3 +5,5 @@ lint:
 
 install-deps:
 	  npm ci
+
+buid: webpack
