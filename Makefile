@@ -7,4 +7,4 @@ install-deps:
 	  npm ci
 
 buid: 
-	  npm run-script build
+	  npm build [<package-folder>]
