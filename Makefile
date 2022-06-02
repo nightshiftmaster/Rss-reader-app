@@ -1,4 +1,4 @@
-install: npm ci
+install: npm install
 
 buid: 
 	  npm run build
