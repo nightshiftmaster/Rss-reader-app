@@ -7,4 +7,4 @@ install-deps:
 	  npm ci
 
 buid: 
-	  npm build [<package-folder>]
+	  npm run build --if-present
