@@ -1,5 +1,2 @@
 lint:
-	  npx eslint .
-	  
-test:
-	  npm test
+	  npx eslint .	  
