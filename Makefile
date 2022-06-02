@@ -6,4 +6,5 @@ lint:
 install-deps:
 	  npm ci
 
-buid: npx webpack
+buid: 
+      npx webpack
