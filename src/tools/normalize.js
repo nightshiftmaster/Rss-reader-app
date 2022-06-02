@@ -8,7 +8,9 @@ const checkNewPosts = (data, state) => {
   });
 };
 
-export default (parsedData, state) => ({
+const normalizeData = (parsedData, state) => {
+  try {
+   return ({
   title: parsedData.querySelector('title').textContent,
   description: parsedData.querySelector('description').textContent,
   posts: checkNewPosts(parsedData, state).reduce((acc, item) => {
@@ -23,3 +25,11 @@ export default (parsedData, state) => ({
     return acc;
   }, []),
 });
+  }
+  catch(e){
+    console.log(e)
+    throw e
+  }
+}
+
+export { checkNewPosts, normalizeData };
