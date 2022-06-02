@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import _ from 'lodash';
 
 const checkNewPosts = (data, state) => {
@@ -8,9 +9,7 @@ const checkNewPosts = (data, state) => {
   });
 };
 
-const normalizeData = (parsedData, state) => {
-  try {
-   return ({
+const normalizeData = (parsedData, state) => ({
   title: parsedData.querySelector('title').textContent,
   description: parsedData.querySelector('description').textContent,
   posts: checkNewPosts(parsedData, state).reduce((acc, item) => {
@@ -25,11 +24,5 @@ const normalizeData = (parsedData, state) => {
     return acc;
   }, []),
 });
-  }
-  catch(e){
-    console.log(e)
-    throw e
-  }
-}
 
 export { checkNewPosts, normalizeData };

@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Thu Jun  2 10:56:00 2022
+# Make data base, printed on Fri Jun  3 00:26:04 2022
 
 # Variables
 
@@ -36,7 +36,7 @@ MAKEFILE_LIST :=  Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/f3/l5m2sm1s01v9zhk8f_k92skc0000gn/T/vscode-ipc-f65b4f38-72c1-4d8c-b41f-7d910f289782.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/f3/l5m2sm1s01v9zhk8f_k92skc0000gn/T/vscode-ipc-22436640-3017-4726-bbcb-b4d519bcc3f6.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -88,7 +88,7 @@ MAKE_VERSION := 3.81
 # environment
 USER = nightshiftmaster
 # makefile
-.DEFAULT_GOAL := lint
+.DEFAULT_GOAL := install
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
@@ -132,7 +132,7 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 56224
+VSCODE_PID = 68923
 # variable set hash-table stats:
 # Load=61/1024=6%, Rehash=0, Collisions=1/85=1%
 
@@ -170,18 +170,18 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-01 16:04:21
+#  Last modified 2022-06-03 00:00:16
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
-test:
+build:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 5):
-	npm test
+	npm run build --if-present
 	
 
 # Not a target:
@@ -194,12 +194,20 @@ lint:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 2):
+#  commands to execute (from `Makefile', line 8):
 	npx eslint .
 	
 
+install:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 2):
+	npm ci
+	
+
 # files hash-table stats:
-# Load=6/1024=1%, Rehash=0, Collisions=0/18=0%
+# Load=7/1024=1%, Rehash=0, Collisions=0/19=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -211,7 +219,7 @@ lint:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Thu Jun  2 10:56:00 2022
+# Finished Make data base on Fri Jun  3 00:26:04 2022
 
  
 make: *** No rule to make target `all'.  Stop.
