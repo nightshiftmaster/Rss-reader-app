@@ -1,10 +1,7 @@
-install: install-deps
+install: npm ci
+
+buid: 
+	  npm run build
 
 lint:
 	  npx eslint .
-
-install-deps:
-	  npm ci
-
-buid: 
-	  npm run build --if-present
