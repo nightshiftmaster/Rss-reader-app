@@ -7,4 +7,4 @@ install-deps:
 	  npm ci
 
 buid: 
-	  npx webpack 
+	  npm run-script build
