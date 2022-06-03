@@ -1,5 +1,4 @@
 node_modules/
-dist/
 main.js
 .vscode/
-.DS_Store/
+.DS_Store
