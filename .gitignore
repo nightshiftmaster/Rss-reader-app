@@ -1,4 +1,2 @@
-node_modules/
-main.js
-.vscode/
-.DS_Store
+#ignore node mosules
+node_modules
