@@ -1,5 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory `/Users/nightshiftmaster/Desktop/frontend-project-lvl3'
-npm ci
-make: Leaving directory `/Users/nightshiftmaster/Desktop/frontend-project-lvl3'
- 
