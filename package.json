@@ -3,12 +3,6 @@
   "version": "1.0.0",
   "description": "rss agregator",
   "main": "index.js",
-  "jest": {
-    "verbose": true
-  },
-  "scripts": {
-    "test": "testing-library/jest-dom"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nightshiftmaster/frontend-project-lvl3.git"
