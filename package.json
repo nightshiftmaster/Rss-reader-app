@@ -4,8 +4,7 @@
   "description": "rss agregator",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --config=Scripts/config/webpack.dev.js --watch",
-    "build": "webpack --config=Scripts/config/webpack.prod.js",
+    "build": "webpack",
     "test": "node --experimental-vm-modules node_modules/.bin/jest"
   },
   "repository": {
