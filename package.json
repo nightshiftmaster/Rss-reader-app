@@ -5,7 +5,6 @@
   "main": "index.js",
   "jest": {
     "verbose": true,
-    "testURL": "http://localhost/",
     "testEnvironment": "jsdom"
   },
   "scripts": {
