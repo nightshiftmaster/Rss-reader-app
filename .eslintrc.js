@@ -11,6 +11,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
+  ignorePatterns: ['main.js'],
   rules: {
   },
 };

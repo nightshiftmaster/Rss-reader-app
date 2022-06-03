@@ -9,7 +9,7 @@ module.exports = {
     main: './index.js',
   },
   output: {
-    filename: '[name].[contenthash].js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
   },
   plugins: [
