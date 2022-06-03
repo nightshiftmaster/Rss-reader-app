@@ -15,6 +15,7 @@
     "setupFilesAfterEnv": ["@testing-library/jest-dom/extend-expect"]
   },
   "scripts": {
+    "test": "jest",
     "test:watch": "npm run test -- --watch",
     "build": "webpack"
   },
