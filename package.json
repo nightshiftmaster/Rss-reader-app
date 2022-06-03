@@ -4,10 +4,19 @@
   "description": "rss agregator",
   "main": "index.js",
   "jest": {
-    "testEnvironment": "jsdom"
+    "transform": {
+      "^.+\\.svelte$": "svelte-jester"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "svelte"
+    ],
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["@testing-library/jest-dom/extend-expect"]
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest src",
+    "test:watch": "npm run test -- --watch",
     "build": "webpack"
   },
   "repository": {
