@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "description": "rss agregator",
   "main": "index.js",
-  "type": "module",
   "jest": {
     "verbose": true,
     "testEnvironment": "jsdom"
   },
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "build": "NODE_ENV=production webpack"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
