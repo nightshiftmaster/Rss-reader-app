@@ -4,7 +4,12 @@
   "description": "rss agregator",
   "main": "index.js",
   "type": "module",
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "jsdom"
+  },
   "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
     "build": "webpack"
   },
   "repository": {
