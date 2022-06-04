@@ -3,11 +3,6 @@
   "version": "1.0.0",
   "description": "rss agregator",
   "main": "index.js",
-  "jest": {
-    "verbose": true,
-    "testURL": "http://localhost/",
-    "testEnvironment": "jsdom"
-  },
   "scripts": {
     "test": "jest --colors",
     "build": "webpack"
