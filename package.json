@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "build": "webpack"
+    "build": "NODE_ENV=production webpack"
   },
   "repository": {
     "type": "git",
