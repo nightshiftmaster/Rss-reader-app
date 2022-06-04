@@ -8,6 +8,6 @@ lint:
 	  npx eslint .
 
 test:
-	  npm test
+	  npx jest
 
 .PHONY: test
