@@ -4,5 +4,4 @@ dist
 .vscode
 .DS_Store
 __fixtures__
-__tests__
-.github
+__tests_
