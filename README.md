@@ -6,4 +6,4 @@
 <a href="https://codeclimate.com/github/nightshiftmaster/frontend-project-lvl3/test_coverage"><img src="https://api.codeclimate.com/v1/badges/c12dafc968bbf8bb019e/test_coverage" /></a>
 
 
-https://frontend-project-lvl3-aeia00w40-nightshiftmaster.vercel.app
+https://frontend-project-lvl3-78nkmtpgq-nightshiftmaster.vercel.app
