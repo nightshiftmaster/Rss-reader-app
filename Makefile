@@ -8,4 +8,4 @@ lint:
 	  npx eslint .
 
 test:
-	  npx run test
+	  npx playwright test
