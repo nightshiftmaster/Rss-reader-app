@@ -1,14 +1,12 @@
 install: 
 	  npm ci
 
-build: 
-	  npm run build 
+build:
+	  rm -rf dist
+	  NODE_ENV=production npx webpack 
 
 lint:
 	  npx eslint .
 
 test:
 	  npm run test
-
-serve:
-	  webpack serve
