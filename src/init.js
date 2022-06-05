@@ -42,7 +42,7 @@ const processData = (watchState, value) => {
     .then((responce) => {
       const statusError = responce.status.error;
       const status = responce.status.http_code;
-      const result = status !== 500 && status !== 404 && !statusError ? [
+      const result = status !== 404 && !statusError ? [
         watchState.form.currentLink = value,
         watchState.data.responceData = responce,
         watchState.data.linksHistory.push(value),
