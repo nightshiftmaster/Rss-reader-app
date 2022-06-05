@@ -9,10 +9,8 @@ module.exports = {
     main: './index.js',
   },
   output: {
-    path: path.resolve(__dirname, '/public/assets/'),
-    publicPath: '/assets/',
-    filename: 'bundle.js',
-    chunkFilename: '[name].js',
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
   },
   plugins: [
     new HTMLWebpackPlugin({
