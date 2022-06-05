@@ -10,13 +10,11 @@ module.exports = {
   },
   devServer: {
     open: true,
-    static: path.resolve(__dirname, /public/),
     host: 'localhost',
   },
   output: {
-    path: path.resolve(__dirname, '/public'),
-    filename: 'assets/bundle.js',
-    chunkFilename: '[name].js',
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
   },
   plugins: [
     new HTMLWebpackPlugin({
