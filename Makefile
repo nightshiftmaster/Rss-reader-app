@@ -2,10 +2,10 @@ install:
 	  npm ci
 
 build: 
-	  webpack
+	  npm run build 
 
 lint:
 	  npx eslint .
 
 test:
-	  npx jest
+	  npm run test

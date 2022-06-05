@@ -4,12 +4,13 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  mode: process.env.NODE_ENV || 'development',
+  mode: 'development',
   entry: {
     main: './index.js',
   },
   devServer: {
     open: true,
+    static: path.resolve(__dirname, '/public/'),
     host: 'localhost',
   },
   output: {
