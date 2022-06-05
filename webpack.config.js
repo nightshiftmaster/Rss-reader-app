@@ -10,12 +10,12 @@ module.exports = {
   },
   devServer: {
     open: true,
-    static: path.resolve(__dirname, '/public/'),
+    static: path.resolve(__dirname, 'public'),
     host: 'localhost',
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public'),
   },
   plugins: [
     new HTMLWebpackPlugin({
