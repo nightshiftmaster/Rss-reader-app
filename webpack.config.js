@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -8,6 +7,10 @@ module.exports = {
   mode: 'development',
   entry: {
     main: './index.js',
+  },
+  devServer: {
+    open: true,
+    host: 'localhost',
   },
   output: {
     filename: '[name].js',
