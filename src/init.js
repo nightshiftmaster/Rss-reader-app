@@ -47,9 +47,6 @@ const processData = (watchState, value) => {
   makeFetch(value, watchState)
     .then((response) => response.json())
     .then((responce) => {
-      if (responce.contents === null) {
-        throw new Error('nonValidRss');
-      }
       watchState.data.responceData = responce.contents;
       watchState.form.currentLink = value;
       watchState.data.linksHistory.push(value);
