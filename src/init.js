@@ -45,7 +45,7 @@ const getNewPosts = (watchState, link, delay) => {
 
 const processData = (watchState, value) => {
   makeFetch(value, watchState)
-    .then((response) => response.json())
+    .then((response) => response.json()).catch(console.log)
     .then((responce) => {
       watchState.data.responceData = responce.contents;
       watchState.form.currentLink = value;
