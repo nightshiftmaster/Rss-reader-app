@@ -7,7 +7,7 @@ import makeParse from './tools/parser';
 const { feedsListBuilder, postsListBuilder, modalWindowBuilder } = builders;
 
 const responceDataHandler = (responce, state, elements, i18Instance) => {
-  const parsedData = makeParse(responce.contents);
+  const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
   const feedsList = feedsListBuilder(normalizedData, elements);
   const postsList = postsListBuilder(normalizedData, elements, i18Instance);
@@ -16,7 +16,7 @@ const responceDataHandler = (responce, state, elements, i18Instance) => {
 };
 
 const newPostsDataHandler = (responce, state, elements, i18Instance) => {
-  const parsedData = makeParse(responce.contents);
+  const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
   const postsList = postsListBuilder(normalizedData, elements, i18Instance);
   const modalWindow = modalWindowBuilder(elements, normalizedData, i18Instance);

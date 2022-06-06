@@ -15,6 +15,13 @@ const feedbackMessages = {
   doublesAlert: 'feedbacks.doubles_alert',
 };
 
+const makeFetch = (link, watchState) => fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
+  .catch(() => {
+    watchState.form.feedbackMessage = feedbackMessages.netWorkError;
+    watchState.form.processState = 'filling';
+    throw new Error('netWorkError');
+  });
+
 const errorMessages = {
   network: {
     error: 'Network Problems. Try again.',
@@ -26,7 +33,7 @@ const getNewPosts = (watchState, link, delay) => {
     fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
       .then((response) => response.json())
       .then((responce) => {
-        watchState.data.newPostsData = responce;
+        watchState.data.newPostsData = responce.contents;
       })
       .catch((err) => {
         watchState.form.processError = errorMessages.network.error;
@@ -37,23 +44,21 @@ const getNewPosts = (watchState, link, delay) => {
 };
 
 const processData = (watchState, value) => {
-  fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(value)}`)
+  makeFetch(value, watchState)
     .then((response) => response.json())
     .then((responce) => {
-      try {
-        watchState.form.currentLink = value;
-        watchState.data.responceData = responce;
-        watchState.data.linksHistory.push(value);
-        watchState.form.processState = 'finished';
-        watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
-        getNewPosts(watchState, watchState.form.currentLink, 5000);
-      } catch (e) {
-        watchState.form.feedbackMessage = feedbackMessages.nonValidRss;
-        watchState.form.processState = 'filling';
+      if (responce.contents === null) {
+        throw new Error('nonValidRss');
       }
+      watchState.data.responceData = responce.contents;
+      watchState.form.currentLink = value;
+      watchState.data.linksHistory.push(value);
+      watchState.form.processState = 'finished';
+      watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
+      getNewPosts(watchState, watchState.form.currentLink, 5000);
     })
     .catch((e) => {
-      watchState.form.feedbackMessage = feedbackMessages.netWorkError;
+      watchState.form.feedbackMessage = feedbackMessages[e.message];
       watchState.form.processState = 'filling';
       console.log(e);
     });
