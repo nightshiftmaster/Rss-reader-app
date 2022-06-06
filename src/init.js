@@ -31,7 +31,7 @@ const errorMessages = {
 const getNewPosts = (watchState, link, delay) => {
   setTimeout(() => {
     fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
-      .then((response) => response.json())
+      .then((response) => response.json()).catch(console.log)
       .then((responce) => {
         watchState.data.newPostsData = responce.contents;
       })
@@ -40,7 +40,7 @@ const getNewPosts = (watchState, link, delay) => {
         throw err;
       });
     getNewPosts(watchState, link, delay);
-  }, delay);
+  }, delay).catch(console.log);
 };
 
 const processData = (watchState, value) => {
@@ -144,7 +144,7 @@ export default () => {
     if (isValidValue) {
       elements.feedbackElement.textContent = '';
       watchState.form.processState = 'sending';
-      processData(watchState, value);
+      processData(watchState, value).catch(console.log);
     }
   });
 };
