@@ -38,15 +38,15 @@ const getNewPosts = (watchState, link, delay) => {
 
 const processData = (watchState, value) => {
   fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(value)}`)
+    .then((response) => response.json())
     .then((responce) => {
       watchState.form.currentLink = value;
-      watchState.data.responceData = responce.json();
+      watchState.data.responceData = responce;
       watchState.data.linksHistory.push(value);
       watchState.form.processState = 'finished';
       watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
       getNewPosts(watchState, watchState.form.currentLink, 5000);
-    }).catch((e) => {
-      console.log(e);
+    }).catch(() => {
       watchState.form.feedbackMessage = feedbackMessages.nonValidRss;
       watchState.form.processState = 'filling';
     })
@@ -66,7 +66,7 @@ const validated = async (field, watchState) => {
   });
   const schema = yup.string().required().url()
     .nullable()
-    .notOneOf([watchState.form.linksHistory], feedbackMessages.doublesAlert);
+    .notOneOf([watchState.data.linksHistory], feedbackMessages.doublesAlert);
   try {
     await schema.validate(field);
     return '';
