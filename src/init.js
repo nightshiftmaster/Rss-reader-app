@@ -38,18 +38,17 @@ const getNewPosts = (watchState, link, delay) => {
 
 const processData = (watchState, value) => {
   fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(value)}`)
-    .then((response) => response.json())
     .then((responce) => {
       watchState.form.currentLink = value;
-      watchState.data.responceData = responce;
+      watchState.data.responceData = responce.json();
       watchState.data.linksHistory.push(value);
       watchState.form.processState = 'finished';
       watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
       getNewPosts(watchState, watchState.form.currentLink, 5000);
     }).catch((e) => {
+      console.log(e);
       watchState.form.feedbackMessage = feedbackMessages.nonValidRss;
       watchState.form.processState = 'filling';
-      console.log(e);
     })
 
     .catch((err) => {
