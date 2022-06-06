@@ -16,9 +16,10 @@ const feedbackMessages = {
 };
 
 const makeFetch = (link, watchState) => fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
-  .catch(() => {
+  .catch((e) => {
     watchState.form.feedbackMessage = feedbackMessages.netWorkError;
     watchState.form.processState = 'filling';
+    console.log(e);
     throw new Error('netWorkError');
   });
 
@@ -30,8 +31,8 @@ const errorMessages = {
 
 const getNewPosts = (watchState, link, delay) => {
   setTimeout(() => {
-    fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
-      .then((response) => response.json()).catch(console.log)
+    makeFetch(link, watchState)
+      .then((response) => response.json())
       .then((responce) => {
         watchState.data.newPostsData = responce.contents;
       })
@@ -40,13 +41,16 @@ const getNewPosts = (watchState, link, delay) => {
         throw err;
       });
     getNewPosts(watchState, link, delay);
-  }, delay).catch(console.log);
+  }, delay);
 };
 
 const processData = (watchState, value) => {
   makeFetch(value, watchState)
-    .then((response) => response.json()).catch(console.log)
+    .then((response) => response.json())
     .then((responce) => {
+      if (responce.contents === null) {
+        throw new Error('nonValidRss');
+      }
       watchState.data.responceData = responce.contents;
       watchState.form.currentLink = value;
       watchState.data.linksHistory.push(value);
@@ -144,7 +148,7 @@ export default () => {
     if (isValidValue) {
       elements.feedbackElement.textContent = '';
       watchState.form.processState = 'sending';
-      processData(watchState, value).catch(console.log);
+      processData(watchState, value);
     }
   });
 };
