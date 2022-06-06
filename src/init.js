@@ -40,21 +40,18 @@ const processData = (watchState, value) => {
   fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(value)}`)
     .then((response) => response.json())
     .then((responce) => {
-      const statusError = responce.status.error;
-      const status = responce.status.http_code;
-      const result = status !== 404 && !statusError ? [
-        watchState.form.currentLink = value,
-        watchState.data.responceData = responce,
-        watchState.data.linksHistory.push(value),
-        watchState.form.processState = 'finished',
-        watchState.form.feedbackMessage = feedbackMessages.uploadSuccess,
-        getNewPosts(watchState, watchState.form.currentLink, 5000),
-
-      ]
-        : [watchState.form.feedbackMessage = feedbackMessages.nonValidRss,
-          watchState.form.processState = 'filling'];
-      return result;
+      watchState.form.currentLink = value;
+      watchState.data.responceData = responce;
+      watchState.data.linksHistory.push(value);
+      watchState.form.processState = 'finished';
+      watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
+      getNewPosts(watchState, watchState.form.currentLink, 5000);
+    }).catch((e) => {
+      watchState.form.feedbackMessage = feedbackMessages.nonValidRss;
+      watchState.form.processState = 'filling';
+      console.log(e);
     })
+
     .catch((err) => {
       watchState.form.feedbackMessage = feedbackMessages.netWorkError;
       watchState.form.processState = 'filling';

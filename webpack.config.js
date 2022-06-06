@@ -8,10 +8,6 @@ module.exports = {
   entry: {
     main: './index.js',
   },
-  devServer: {
-    open: true,
-    host: 'localhost',
-  },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
