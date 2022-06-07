@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from 'i18next';
 import resources from './locales/index';
 import initView from './view';
-import processData from './getData';
+import processData from './tools/getData';
 import validate from './tools/validator';
 
 export default () => {
