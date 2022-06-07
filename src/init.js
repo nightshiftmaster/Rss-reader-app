@@ -15,11 +15,8 @@ const feedbackMessages = {
   doublesAlert: 'feedbacks.doubles_alert',
 };
 
-const makeFetch = (link, watchState) => fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
+const makeFetch = (link) => fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
   .catch((e) => {
-    watchState.form.feedbackMessage = feedbackMessages.netWorkError;
-    watchState.form.processState = 'filling';
-    console.log(e);
     throw new Error('netWorkError');
   });
 
@@ -44,24 +41,31 @@ const getNewPosts = (watchState, link, delay) => {
   }, delay);
 };
 
-const processData = async (watchState, value) => {
-  try {
-    const response = await fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(value)}`);
-    if (!response.ok) {
-      throw new Error('netWorkError');
-    }
-    const json = await response.json();
-    watchState.data.responceData = json.contents;
-    watchState.form.currentLink = value;
-    watchState.data.linksHistory.push(value);
-    watchState.form.processState = 'finished';
-    watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
-    getNewPosts(watchState, watchState.form.currentLink, 5000);
-  } catch (error) {
-    watchState.form.feedbackMessage = feedbackMessages[error.message];
-    watchState.form.processState = 'filling';
-    console.log(error.message);
-  }
+const processData = (watchState, value) => {
+  makeFetch(value, watchState)
+    .then((responce) => {
+      if (!responce.ok) {
+        throw new Error('netWorkError');
+      }
+      return responce;
+    }).then((responce) => responce.json())
+    .then((responce) => {
+      if (responce.contents === null) {
+        throw new Error('nonValidRss');
+      }
+      watchState.data.responceData = responce.contents;
+      watchState.form.currentLink = value;
+      watchState.data.linksHistory.push(value);
+      watchState.form.processState = 'finished';
+      watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
+      getNewPosts(watchState, watchState.form.currentLink, 5000);
+    })
+    .catch((error) => {
+      watchState.form.feedbackMessage = feedbackMessages[error.message];
+      watchState.form.processState = 'filling';
+      console.log(`Error: ${error.message}`);
+    });
+};
   // makeFetch(value, watchState)
   //   .then((response) => response)
   //   .then((responce) => {
@@ -77,7 +81,7 @@ const processData = async (watchState, value) => {
   //     watchState.form.processState = 'filling';
   //     console.log(e.message);
   //   });
-};
+// };
 
 const validated = async (field, watchState) => {
   setLocale({
