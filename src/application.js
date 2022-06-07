@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from 'i18next';
 import resources from './locales/index';
 import initView from './view';
-import processData from './tools/getData';
+import processData from './getData';
 import validate from './tools/validator';
 
 export default () => {
@@ -26,11 +26,11 @@ export default () => {
     containers: {
       posts: {
         postsColumn: document.querySelector('.posts'),
-        posts: document.querySelector('.posts .list-group'),
+        postsList: document.querySelector('.posts .list-group'),
       },
       feeds: {
         feedsColumn: document.querySelector('.feeds'),
-        feeds: document.querySelector('.feeds .list-group'),
+        feedsList: document.querySelector('.feeds .list-group'),
       },
     },
     form: document.querySelector('form'),
