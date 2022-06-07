@@ -1,26 +1,26 @@
 /* eslint-disable no-console */
 import onChange from 'on-change';
-import utilities from './tools/renders';
+import renders from './tools/renders';
 import { normalizeData } from './tools/normalize';
 import makeParse from './tools/parserRss';
 
-const { modalWindowRender, postsRender, feedsRender } = utilities;
+const { modalWindowRender, postsRender, feedsRender } = renders;
 
 const responceDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
-  const feedsList = feedsRender(normalizedData, elements);
-  const postsList = postsRender(normalizedData, elements, i18Instance);
-  const modalWindow = modalWindowRender(elements, normalizedData, i18Instance);
-  return [feedsList, postsList, modalWindow];
+  const view1 = feedsRender(normalizedData, elements);
+  const view2 = postsRender(normalizedData, elements, i18Instance);
+  const view3 = modalWindowRender(elements, normalizedData, i18Instance);
+  return [view1, view2, view3];
 };
 
 const newPostsDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
-  const postsList = postsRender(normalizedData, elements, i18Instance);
-  const modalWindow = modalWindowRender(elements, normalizedData, i18Instance);
-  return [postsList, modalWindow];
+  const view1 = postsRender(normalizedData, elements, i18Instance);
+  const view2 = modalWindowRender(elements, normalizedData, i18Instance);
+  return [view1, view2];
 };
 
 const processErrorHandler = (message) => {
