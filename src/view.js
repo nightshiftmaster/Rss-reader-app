@@ -9,18 +9,18 @@ const { modalWindowRender, postsRender, feedsRender } = renders;
 const responceDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
-  const feedsList = feedsRender(normalizedData, elements);
-  const postsList = postsRender(normalizedData, elements, i18Instance);
-  const modalWindow = modalWindowRender(elements, normalizedData, i18Instance);
-  return [feedsList, postsList, modalWindow];
+  const feeds = feedsRender(normalizedData, elements);
+  const posts = postsRender(normalizedData, elements, i18Instance);
+  const modal = modalWindowRender(elements, normalizedData, i18Instance);
+  return [feeds, posts, modal];
 };
 
 const newPostsDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
-  const postsList = postsRender(normalizedData, elements, i18Instance);
-  const modalWindow = modalWindowRender(elements, normalizedData, i18Instance);
-  return [postsList, modalWindow];
+  const posts = postsRender(normalizedData, elements, i18Instance);
+  const modal = modalWindowRender(elements, normalizedData, i18Instance);
+  return [posts, modal];
 };
 
 const processErrorHandler = (message) => {
