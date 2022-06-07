@@ -15,8 +15,9 @@ const feedbackMessages = {
   doublesAlert: 'feedbacks.doubles_alert',
 };
 
-const makeFetch = (link) => fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
+const makeFetch = (link) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${link}`)
   .catch((e) => {
+    console.log(e);
     throw new Error('netWorkError');
   });
 
