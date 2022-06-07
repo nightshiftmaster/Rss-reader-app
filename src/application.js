@@ -26,11 +26,11 @@ export default () => {
     containers: {
       posts: {
         postsColumn: document.querySelector('.posts'),
-        postsList: document.querySelector('.posts .list-group'),
+        posts: document.querySelector('.posts .list-group'),
       },
       feeds: {
         feedsColumn: document.querySelector('.feeds'),
-        feedsList: document.querySelector('.feeds .list-group'),
+        feeds: document.querySelector('.feeds .list-group'),
       },
     },
     form: document.querySelector('form'),

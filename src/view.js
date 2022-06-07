@@ -4,22 +4,22 @@ import renders from './tools/renders';
 import { normalizeData } from './tools/normalize';
 import makeParse from './tools/parserRss';
 
-const { renderModalWindow, renderPosts, renderFeeds } = renders;
+const { modalWindowRender, postsRender, feedsRender } = renders;
 
 const responceDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
-  const feedsList = renderFeeds(normalizedData, elements);
-  const postsList = renderPosts(normalizedData, elements, i18Instance);
-  const modalWindow = renderModalWindow(elements, normalizedData, i18Instance);
+  const feedsList = feedsRender(normalizedData, elements);
+  const postsList = postsRender(normalizedData, elements, i18Instance);
+  const modalWindow = modalWindowRender(elements, normalizedData, i18Instance);
   return [feedsList, postsList, modalWindow];
 };
 
 const newPostsDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
-  const postsList = renderPosts(normalizedData, elements, i18Instance);
-  const modalWindow = renderModalWindow(elements, normalizedData, i18Instance);
+  const postsList = postsRender(normalizedData, elements, i18Instance);
+  const modalWindow = modalWindowRender(elements, normalizedData, i18Instance);
   return [postsList, modalWindow];
 };
 
