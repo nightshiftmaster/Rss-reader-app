@@ -45,21 +45,38 @@ const getNewPosts = (watchState, link, delay) => {
 };
 
 const processData = async (watchState, value) => {
-  makeFetch(value, watchState)
-    .then((response) => response.json())
-    .then((responce) => {
-      watchState.data.responceData = responce.contents;
-      watchState.form.currentLink = value;
-      watchState.data.linksHistory.push(value);
-      watchState.form.processState = 'finished';
-      watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
-      getNewPosts(watchState, watchState.form.currentLink, 5000);
-    })
-    .catch((e) => {
-      watchState.form.feedbackMessage = feedbackMessages[e.message];
-      watchState.form.processState = 'filling';
-      console.log(e.message);
-    });
+  try {
+    const response = await fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(value)}`);
+    if (!response.ok) {
+      throw new Error('netWorkError');
+    }
+    const json = await response.json();
+    watchState.data.responceData = json.contents;
+    watchState.form.currentLink = value;
+    watchState.data.linksHistory.push(value);
+    watchState.form.processState = 'finished';
+    watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
+    getNewPosts(watchState, watchState.form.currentLink, 5000);
+  } catch (error) {
+    watchState.form.feedbackMessage = feedbackMessages[error.message];
+    watchState.form.processState = 'filling';
+    console.log(error.message);
+  }
+  // makeFetch(value, watchState)
+  //   .then((response) => response)
+  //   .then((responce) => {
+  //     watchState.data.responceData = responce.json().contents;
+  //     watchState.form.currentLink = value;
+  //     watchState.data.linksHistory.push(value);
+  //     watchState.form.processState = 'finished';
+  //     watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
+  //     getNewPosts(watchState, watchState.form.currentLink, 5000);
+  //   })
+  //   .catch((e) => {
+  //     watchState.form.feedbackMessage = feedbackMessages[e.message];
+  //     watchState.form.processState = 'filling';
+  //     console.log(e.message);
+  //   });
 };
 
 const validated = async (field, watchState) => {
