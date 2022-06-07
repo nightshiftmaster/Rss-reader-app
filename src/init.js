@@ -44,13 +44,10 @@ const getNewPosts = (watchState, link, delay) => {
   }, delay);
 };
 
-const processData = (watchState, value) => {
+const processData = async (watchState, value) => {
   makeFetch(value, watchState)
     .then((response) => response.json())
     .then((responce) => {
-      if (responce.contents === null) {
-        throw new Error('nonValidRss');
-      }
       watchState.data.responceData = responce.contents;
       watchState.form.currentLink = value;
       watchState.data.linksHistory.push(value);
@@ -61,7 +58,7 @@ const processData = (watchState, value) => {
     .catch((e) => {
       watchState.form.feedbackMessage = feedbackMessages[e.message];
       watchState.form.processState = 'filling';
-      console.log(e);
+      console.log(e.message);
     });
 };
 
