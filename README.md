@@ -1,7 +1,7 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/nightshiftmaster/frontend-project-lvl3/workflows/hexlet-check/badge.svg)](https://github.com/nightshiftmaster/frontend-project-lvl3/actions)
 
-![Node CI](https://github.com/nightshiftmaster/frontend-project-lvl3/workflows/node.js.yml/badge.svg)
+[![Node CI](https://github.com/nightshiftmaster/frontend-project-lvl3/actions/workflows/node.js.yml/badge.svg)]
 
 <a href="https://codeclimate.com/github/nightshiftmaster/frontend-project-lvl3/maintainability"><img src="https://api.codeclimate.com/v1/badges/c12dafc968bbf8bb019e/maintainability" /></a>
 
