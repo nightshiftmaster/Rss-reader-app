@@ -58,6 +58,8 @@ const feedbackMessagesHandler = (elements, message, i18Instance) => {
       elements.inputField.classList.remove('is-invalid');
       feedbackElement.classList.remove('text-danger');
       feedbackElement.classList.add('text-success');
+      i18Instance.t('feedbacks.upload_success');
+      feedbackElement.setAttribute('text', i18Instance.t('feedbacks.upload_success'));
       feedbackElement.textContent = i18Instance.t('feedbacks.upload_success');
       elements.form.reset();
       elements.inputField.focus();
