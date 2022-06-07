@@ -1,4 +1,4 @@
-export const modalWindowBuilder = (elements, normalizedData, i18Instance) => {
+const renderModalWindow = (elements, normalizedData, i18Instance) => {
   const { modalHeader, modalBody } = elements.modalWindowElements;
   const { closeModal, fullArticle } = elements.modalWindowElements.modalControl;
   const modalElementsList = document.querySelectorAll('[data-bs-toggle="modal"]');
@@ -39,7 +39,7 @@ export const modalWindowBuilder = (elements, normalizedData, i18Instance) => {
   });
 };
 
-export const postsListBuilder = (normalizedData, elements, i18Instance) => {
+const renderPosts = (normalizedData, elements, i18Instance) => {
   const { postsList } = elements.containers.posts;
   const list = normalizedData.posts.map((post) => {
     const { dataId } = post;
@@ -65,7 +65,7 @@ export const postsListBuilder = (normalizedData, elements, i18Instance) => {
   postsList.append(...list);
 };
 
-export const feedsListBuilder = (normalizeData, elements) => {
+const renderFeeds = (normalizeData, elements) => {
   const { feedsList } = elements.containers.feeds;
   const li = document.createElement('li');
   li.classList.add('list-group-item', 'border-0', 'border-end-0');
@@ -78,3 +78,5 @@ export const feedsListBuilder = (normalizeData, elements) => {
   li.append(header, paragraph);
   feedsList.append(li);
 };
+
+export default { renderModalWindow, renderPosts, renderFeeds };

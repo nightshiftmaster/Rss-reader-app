@@ -1,25 +1,25 @@
 /* eslint-disable no-console */
 import onChange from 'on-change';
-import builders from './tools/index';
+import renders from './tools/renders';
 import { normalizeData } from './tools/normalize';
-import makeParse from './tools/parser';
+import makeParse from './tools/parserRss';
 
-const { feedsListBuilder, postsListBuilder, modalWindowBuilder } = builders;
+const { renderModalWindow, renderPosts, renderFeeds } = renders;
 
 const responceDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
-  const feedsList = feedsListBuilder(normalizedData, elements);
-  const postsList = postsListBuilder(normalizedData, elements, i18Instance);
-  const modalWindow = modalWindowBuilder(elements, normalizedData, i18Instance);
+  const feedsList = renderFeeds(normalizedData, elements);
+  const postsList = renderPosts(normalizedData, elements, i18Instance);
+  const modalWindow = renderModalWindow(elements, normalizedData, i18Instance);
   return [feedsList, postsList, modalWindow];
 };
 
 const newPostsDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
   const normalizedData = normalizeData(parsedData, state);
-  const postsList = postsListBuilder(normalizedData, elements, i18Instance);
-  const modalWindow = modalWindowBuilder(elements, normalizedData, i18Instance);
+  const postsList = renderPosts(normalizedData, elements, i18Instance);
+  const modalWindow = renderModalWindow(elements, normalizedData, i18Instance);
   return [postsList, modalWindow];
 };
 
@@ -59,7 +59,6 @@ const feedbackMessagesHandler = (elements, message, i18Instance) => {
       feedbackElement.classList.remove('text-danger');
       feedbackElement.classList.add('text-success');
       i18Instance.t('feedbacks.upload_success');
-      feedbackElement.setAttribute('text', i18Instance.t('feedbacks.upload_success'));
       feedbackElement.textContent = i18Instance.t('feedbacks.upload_success');
       elements.form.reset();
       elements.inputField.focus();
