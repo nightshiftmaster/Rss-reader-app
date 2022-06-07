@@ -7,5 +7,7 @@ build:
 lint:
 	  npx eslint .
 
-test:
-	  npm run test
+push:
+	  git add .
+	  git commit -m 'update'
+	  git push
