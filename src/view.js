@@ -76,7 +76,7 @@ const processStateHandler = (elements, process, i18instance) => {
   }
 };
 
-const initView = (state, elements, i18instance) => onChange(state, (path, curr, prev) => {
+const initView = (state, elements, i18instance) => onChange(state, (path, curr) => {
   switch (path) {
     case 'form.processState':
       processStateHandler(elements, curr, i18instance);
