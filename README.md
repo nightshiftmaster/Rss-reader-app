@@ -15,5 +15,14 @@ Rss Reader is a service for aggregating RSS feeds, with the help of which it is 
 make install
 ```
 
+## How to use:
+
+```
+1) [Open Rss Reader](https://frontend-project-lvl3-ceo9d4lb8-nightshiftmaster.vercel.app)
+2) Insert Rss feed url 
+3) Get a list of current articles & news
+4) Enjoy !
+```
+
 ## Preview
 ![image](Demo.gif)
