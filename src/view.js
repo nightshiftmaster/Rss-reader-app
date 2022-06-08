@@ -19,8 +19,6 @@ const validFeedbacksRender = (field, feedback, i18Instance, message) => {
   feedback.classList.remove('text-danger');
   feedback.classList.add('text-success');
   feedback.textContent = i18Instance.t(message);
-  field.form.reset();
-  field.inputField.focus();
 };
 
 const responceDataHandler = (responce, state, elements, i18Instance) => {

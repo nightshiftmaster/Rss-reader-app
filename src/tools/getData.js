@@ -36,7 +36,7 @@ const getNewPosts = (watchState, link, delay) => {
   }, delay);
 };
 
-export default (watchState, value) => {
+export default (watchState, value, elements) => {
   makeFetch(value, watchState)
     .then((responce) => {
       if (!responce.ok) {
@@ -54,6 +54,8 @@ export default (watchState, value) => {
       watchState.form.processState = 'finished';
       watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
       getNewPosts(watchState, watchState.form.currentLink, 5000);
+      elements.form.reset();
+      elements.inputField.focus();
     })
     .catch((error) => {
       watchState.form.feedbackMessage = feedbackMessages[error.message];

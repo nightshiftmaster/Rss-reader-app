@@ -69,10 +69,9 @@ export default () => {
       .then((data) => {
         elements.feedbackElement.textContent = '';
         watchState.form.processState = 'sending';
-        return processData(watchState, data);
+        return processData(watchState, data, elements);
       })
       .catch((error) => {
-        console.log(error);
         watchState.form.feedbackMessage = error.message;
       });
   });
