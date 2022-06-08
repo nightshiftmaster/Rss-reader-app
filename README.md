@@ -14,3 +14,6 @@ Rss Reader is a service for aggregating RSS feeds, with the help of which it is 
 ```
 make install
 ```
+
+## Preview
+![image](Demo.gif)
