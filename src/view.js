@@ -7,6 +7,10 @@ import makeParse from './tools/parserRss';
 
 const { modalWindowRender, postsRender, feedsRender } = renders;
 
+const processErrorHandler = (message) => {
+  console.log(message);
+};
+
 const isValidFormHandler = (status, elements) => {
   const result = status === true ? elements.inputField.classList.remove('is-invalid')
     : elements.inputField.classList.add('is-invalid');
@@ -28,23 +32,16 @@ const newPostsDataHandler = (responce, state, elements, i18Instance) => {
   modalWindowRender(elements, normalizedData, i18Instance);
 };
 
-const processErrorHandler = (message) => {
-  console.log(message);
-};
-
 const feedbackMessagesHandler = (elements, message, i18Instance) => {
   const { feedbackElement } = elements;
-  switch (message) {
-    case 'feedbacks.upload_success':
-      feedbackElement.classList.remove('text-danger');
-      feedbackElement.classList.add('text-success');
-      feedbackElement.textContent = i18Instance.t(message);
-      break;
-    default:
-      feedbackElement.classList.add('text-danger');
-      feedbackElement.classList.remove('text-success');
-      feedbackElement.textContent = i18Instance.t(message);
-      break;
+  if (message !== 'feedbacks.upload_success') {
+    feedbackElement.classList.add('text-danger');
+    feedbackElement.classList.remove('text-success');
+    feedbackElement.textContent = i18Instance.t(message);
+  } else {
+    feedbackElement.classList.remove('text-danger');
+    feedbackElement.classList.add('text-success');
+    feedbackElement.textContent = i18Instance.t(message);
   }
 };
 
