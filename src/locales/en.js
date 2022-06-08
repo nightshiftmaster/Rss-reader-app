@@ -1,9 +1,5 @@
 export default {
   translation: {
-    languages: {
-      en: 'English',
-      ru: 'Русский',
-    },
     containers: {
       postsContainer_title: 'Posts',
       feedsContainer_title: 'Feeds',
