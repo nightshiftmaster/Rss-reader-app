@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
 import onChange from 'on-change';
 import renders from './tools/renders';
@@ -5,6 +6,22 @@ import { normalizeData } from './tools/normalize';
 import makeParse from './tools/parserRss';
 
 const { modalWindowRender, postsRender, feedsRender } = renders;
+
+const invalidFeedbacksRender = (field, feedback, i18Instance, message) => {
+  field.inputField.classList.add('is-invalid');
+  feedback.classList.add('text-danger');
+  feedback.classList.remove('text-success');
+  feedback.textContent = i18Instance.t(message);
+};
+
+const validFeedbacksRender = (field, feedback, i18Instance, message) => {
+  field.inputField.classList.remove('is-invalid');
+  feedback.classList.remove('text-danger');
+  feedback.classList.add('text-success');
+  feedback.textContent = i18Instance.t(message);
+  field.form.reset();
+  field.inputField.focus();
+};
 
 const responceDataHandler = (responce, state, elements, i18Instance) => {
   const parsedData = makeParse(responce);
@@ -29,37 +46,19 @@ const feedbackMessagesHandler = (elements, message, i18Instance) => {
   const { feedbackElement } = elements;
   switch (message) {
     case 'feedbacks.doubles_alert':
-      elements.inputField.classList.add('is-invalid');
-      feedbackElement.classList.add('text-danger');
-      feedbackElement.classList.remove('text-success');
-      feedbackElement.textContent = i18Instance.t(message);
+      invalidFeedbacksRender(elements, feedbackElement, i18Instance, message);
       break;
     case 'feedbacks.invalid_url':
-      elements.inputField.classList.add('is-invalid');
-      feedbackElement.classList.add('text-danger');
-      feedbackElement.classList.remove('text-success');
-      feedbackElement.textContent = i18Instance.t(message);
+      invalidFeedbacksRender(elements, feedbackElement, i18Instance, message);
       break;
     case 'feedbacks.non_valid_rss':
-      elements.inputField.classList.add('is-invalid');
-      feedbackElement.classList.add('text-danger');
-      feedbackElement.classList.remove('text-success');
-      feedbackElement.textContent = i18Instance.t(message);
+      invalidFeedbacksRender(elements, feedbackElement, i18Instance, message);
       break;
     case 'feedbacks.network_error':
-      elements.inputField.classList.add('is-invalid');
-      feedbackElement.classList.add('text-danger');
-      feedbackElement.classList.remove('text-success');
-      feedbackElement.textContent = i18Instance.t(message);
+      invalidFeedbacksRender(elements, feedbackElement, i18Instance, message);
       break;
     case 'feedbacks.upload_success':
-      elements.inputField.classList.remove('is-invalid');
-      feedbackElement.classList.remove('text-danger');
-      feedbackElement.classList.add('text-success');
-      i18Instance.t('feedbacks.upload_success');
-      feedbackElement.textContent = i18Instance.t('feedbacks.upload_success');
-      elements.form.reset();
-      elements.inputField.focus();
+      validFeedbacksRender(elements, feedbackElement, i18Instance, message);
       break;
     default:
       break;
