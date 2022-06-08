@@ -7,18 +7,10 @@ import makeParse from './tools/parserRss';
 
 const { modalWindowRender, postsRender, feedsRender } = renders;
 
-const invalidFeedbacksRender = (field, feedback, i18Instance, message) => {
-  field.inputField.classList.add('is-invalid');
-  feedback.classList.add('text-danger');
-  feedback.classList.remove('text-success');
-  feedback.textContent = i18Instance.t(message);
-};
-
-const validFeedbacksRender = (field, feedback, i18Instance, message) => {
-  field.inputField.classList.remove('is-invalid');
-  feedback.classList.remove('text-danger');
-  feedback.classList.add('text-success');
-  feedback.textContent = i18Instance.t(message);
+const isValidFormHandler = (status, elements) => {
+  const result = status === true ? elements.inputField.classList.remove('is-invalid')
+    : elements.inputField.classList.add('is-invalid');
+  return result;
 };
 
 const responceDataHandler = (responce, state, elements, i18Instance) => {
@@ -43,24 +35,15 @@ const processErrorHandler = (message) => {
 const feedbackMessagesHandler = (elements, message, i18Instance) => {
   const { feedbackElement } = elements;
   switch (message) {
-    case 'feedbacks.doubles_alert':
-      invalidFeedbacksRender(elements, feedbackElement, i18Instance, message);
-      break;
-    case 'feedbacks.invalid_url':
-      invalidFeedbacksRender(elements, feedbackElement, i18Instance, message);
-      break;
-    case 'feedbacks.non_valid_rss':
-      invalidFeedbacksRender(elements, feedbackElement, i18Instance, message);
-      break;
-    case 'feedbacks.network_error':
-      invalidFeedbacksRender(elements, feedbackElement, i18Instance, message);
-      break;
     case 'feedbacks.upload_success':
-      validFeedbacksRender(elements, feedbackElement, i18Instance, message);
-      elements.form.reset();
-      elements.inputField.focus();
+      feedbackElement.classList.remove('text-danger');
+      feedbackElement.classList.add('text-success');
+      feedbackElement.textContent = i18Instance.t(message);
       break;
     default:
+      feedbackElement.classList.add('text-danger');
+      feedbackElement.classList.remove('text-success');
+      feedbackElement.textContent = i18Instance.t(message);
       break;
   }
 };
@@ -93,8 +76,7 @@ const processStateHandler = (elements, process, i18instance) => {
   }
 };
 
-const initView = (state, elements, i18instance) => onChange(state, (path, curr) => {
-  console.log(path)
+const initView = (state, elements, i18instance) => onChange(state, (path, curr, prev) => {
   switch (path) {
     case 'form.processState':
       processStateHandler(elements, curr, i18instance);
@@ -114,6 +96,10 @@ const initView = (state, elements, i18instance) => onChange(state, (path, curr) 
 
     case 'form.processError':
       processErrorHandler(curr);
+      break;
+
+    case 'form.valid':
+      isValidFormHandler(curr, elements);
       break;
 
     default:

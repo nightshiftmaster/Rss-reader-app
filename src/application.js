@@ -42,10 +42,11 @@ export default () => {
   const state = {
     form: {
       processState: 'filling',
-      feedbackMessage: {},
+      feedbackMessage: '',
       input: '',
       currentLink: '',
       processError: '',
+      valid: null,
     },
     data: {
       responceData: null,
@@ -67,12 +68,17 @@ export default () => {
     const value = watchState.form.input;
     validate(value, watchState)
       .then((data) => {
+        watchState.form.feedbackMessage = '';
         elements.feedbackElement.textContent = '';
+        watchState.form.valid = true;
         watchState.form.processState = 'sending';
         return processData(watchState, data, elements);
       })
       .catch((error) => {
         watchState.form.feedbackMessage = error.message;
+        watchState.form.valid = false;
       });
   });
+  elements.form.reset();
+  elements.inputField.focus();
 };

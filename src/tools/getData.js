@@ -45,7 +45,7 @@ export default (watchState, value, elements) => {
       return responce;
     }).then((responce) => responce.json())
     .then((responce) => {
-      if (responce.contents.length === 0) {
+      if (responce.contents === null || responce.contents.length === 0) {
         throw new Error('nonValidRss');
       }
       watchState.data.responceData = responce.contents;
