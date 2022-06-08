@@ -57,6 +57,8 @@ const feedbackMessagesHandler = (elements, message, i18Instance) => {
       break;
     case 'feedbacks.upload_success':
       validFeedbacksRender(elements, feedbackElement, i18Instance, message);
+      elements.form.reset();
+      elements.inputField.focus();
       break;
     default:
       break;
@@ -92,6 +94,7 @@ const processStateHandler = (elements, process, i18instance) => {
 };
 
 const initView = (state, elements, i18instance) => onChange(state, (path, curr) => {
+  console.log(path)
   switch (path) {
     case 'form.processState':
       processStateHandler(elements, curr, i18instance);
