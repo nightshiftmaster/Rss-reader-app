@@ -11,7 +11,7 @@ const processErrorHandler = (message) => {
   console.log(message);
 };
 
-const isValidFormHandler = (status, elements) => {
+const validateFormHandler = (status, elements) => {
   const result = status === true ? elements.inputField.classList.remove('is-invalid')
     : elements.inputField.classList.add('is-invalid');
   return result;
@@ -96,7 +96,7 @@ const initView = (state, elements, i18instance) => onChange(state, (path, curr) 
       break;
 
     case 'form.valid':
-      isValidFormHandler(curr, elements);
+      validateFormHandler(curr, elements);
       break;
 
     default:

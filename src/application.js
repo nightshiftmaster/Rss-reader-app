@@ -43,7 +43,6 @@ export default () => {
     form: {
       processState: 'filling',
       feedbackMessage: '',
-      input: '',
       currentLink: '',
       processError: '',
       valid: null,
@@ -60,24 +59,21 @@ export default () => {
   elements.inputField.addEventListener('change', (e) => {
     e.preventDefault();
     const { value } = e.target;
-    watchState.form.input = value;
-  });
-
-  elements.form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const value = watchState.form.input;
-    validate(value, watchState)
-      .then((data) => {
-        watchState.form.feedbackMessage = '';
-        elements.feedbackElement.textContent = '';
-        watchState.form.valid = true;
-        watchState.form.processState = 'sending';
-        return processData(watchState, data, elements);
-      })
-      .catch((error) => {
-        watchState.form.feedbackMessage = error.message;
-        watchState.form.valid = false;
-      });
+    elements.form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      validate(value, watchState)
+        .then((data) => {
+          watchState.form.feedbackMessage = '';
+          elements.feedbackElement.textContent = '';
+          watchState.form.valid = true;
+          watchState.form.processState = 'sending';
+          return processData(watchState, data, elements);
+        })
+        .catch((error) => {
+          watchState.form.feedbackMessage = error.message;
+          watchState.form.valid = false;
+        });
+    });
   });
   elements.form.reset();
   elements.inputField.focus();
