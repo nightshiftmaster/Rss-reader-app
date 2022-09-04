@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
+import parserRss from './parserRss';
+
 const feedbackMessages = {
   uploadSuccess: 'feedbacks.upload_success',
   nonValidRss: 'feedbacks.non_valid_rss',
@@ -26,7 +28,9 @@ const getNewPosts = (watchState, link, delay) => {
     makeFetch(link, watchState)
       .then((response) => response.json())
       .then((responce) => {
-        watchState.data.newPostsData = responce.contents;
+        const parsedData = parserRss(responce.contents);
+        const { posts } = parsedData;
+        watchState.data.posts = { posts };
       })
       .catch((err) => {
         watchState.form.processError = errorMessages.network.error;
@@ -45,10 +49,10 @@ export default (watchState, value, elements) => {
       return responce;
     }).then((responce) => responce.json())
     .then((responce) => {
-      if (responce.contents === null || responce.contents.length === 0) {
-        throw new Error('nonValidRss');
-      }
-      watchState.data.responceData = responce.contents;
+      const parsedData = parserRss(responce.contents);
+      const { title, description, posts } = parsedData;
+      watchState.data.feeds = { title, description };
+      watchState.data.posts = { posts };
       watchState.form.currentLink = value;
       watchState.data.linksHistory.push(value);
       watchState.form.processState = 'finished';

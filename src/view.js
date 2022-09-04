@@ -2,34 +2,17 @@
 /* eslint-disable no-console */
 import onChange from 'on-change';
 import renders from './tools/renders';
-import { normalizeData } from './tools/normalize';
-import makeParse from './tools/parserRss';
 
 const { modalWindowRender, postsRender, feedsRender } = renders;
 
-const processErrorHandler = (message) => {
-  console.log(message);
-};
+const validateFormHandler = (status, elements) => (status ? elements.inputField.classList.remove('is-invalid')
+  : elements.inputField.classList.add('is-invalid'));
 
-const validateFormHandler = (status, elements) => {
-  const result = status === true ? elements.inputField.classList.remove('is-invalid')
-    : elements.inputField.classList.add('is-invalid');
-  return result;
-};
+const feedsHandler = (data, elements) => feedsRender(data, elements);
 
-const responceDataHandler = (responce, state, elements, i18Instance) => {
-  const parsedData = makeParse(responce);
-  const normalizedData = normalizeData(parsedData, state);
-  feedsRender(normalizedData, elements);
-  postsRender(normalizedData, elements, i18Instance);
-  modalWindowRender(elements, normalizedData, i18Instance);
-};
-
-const newPostsDataHandler = (responce, state, elements, i18Instance) => {
-  const parsedData = makeParse(responce);
-  const normalizedData = normalizeData(parsedData, state);
-  postsRender(normalizedData, elements, i18Instance);
-  modalWindowRender(elements, normalizedData, i18Instance);
+const postsHandler = (data, elements, i18Instance) => {
+  postsRender(data, elements, i18Instance);
+  modalWindowRender(elements, data, i18Instance);
 };
 
 const feedbackMessagesHandler = (elements, message, i18Instance) => {
@@ -73,30 +56,30 @@ const processStateHandler = (elements, process, i18instance) => {
   }
 };
 
-const initView = (state, elements, i18instance) => onChange(state, (path, curr) => {
+const initView = (state, elements, i18instance) => onChange(state, (path, current) => {
   switch (path) {
     case 'form.processState':
-      processStateHandler(elements, curr, i18instance);
+      processStateHandler(elements, current, i18instance);
       break;
 
     case 'form.feedbackMessage':
-      feedbackMessagesHandler(elements, curr, i18instance);
+      feedbackMessagesHandler(elements, current, i18instance);
       break;
 
-    case 'data.responceData':
-      responceDataHandler(curr, state, elements, i18instance);
+    case 'data.feeds':
+      feedsHandler(current, elements);
       break;
 
-    case 'data.newPostsData':
-      newPostsDataHandler(curr, state, elements, i18instance);
+    case 'data.posts':
+      postsHandler(current, elements, i18instance);
       break;
 
     case 'form.processError':
-      processErrorHandler(curr);
+      console.log(current);
       break;
 
     case 'form.valid':
-      validateFormHandler(curr, elements);
+      validateFormHandler(current, elements);
       break;
 
     default:
