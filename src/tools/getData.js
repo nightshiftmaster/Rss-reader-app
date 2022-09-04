@@ -9,8 +9,15 @@ const feedbackMessages = {
   doublesAlert: 'feedbacks.doubles_alert',
 };
 
+const addProxy = (link) => {
+  const urlWithProxy = new URL('/get', 'https://allorigins.hexlet.app');
+  urlWithProxy.searchParams.set('disableCache', 'true');
+  urlWithProxy.searchParams.set('url', link);
+  return urlWithProxy.toString();
+};
+
 const makeFetch = (link) => {
-  const proxy = `https://allorigins.hexlet.app/get?disableCache=true&url=${link}`;
+  const proxy = addProxy(link);
   return fetch(proxy)
     .catch(() => {
       throw new Error('netWorkError');
