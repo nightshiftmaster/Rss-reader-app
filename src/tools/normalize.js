@@ -19,11 +19,11 @@ const normalizeData = (parsedData) => {
     posts: checkNewPosts(parsedData).reduce((acc, item) => {
       const title = item.querySelector('title').textContent;
       state.postsHistory.push(title);
-      const dataId = _.uniqueId();
+      const id = _.uniqueId();
       const description = item.querySelector('description').textContent;
       const link = item.querySelector('link').textContent;
       acc.push({
-        title, description, dataId, link,
+        title, description, id, link,
       });
       return acc;
     }, []),

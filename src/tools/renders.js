@@ -1,54 +1,54 @@
 /* eslint-disable no-param-reassign */
-const closeModalWindow = (elements, modalElement, modalWindow) => {
-  const { closeModal } = elements.modalWindowElements.modalControl;
-  closeModal.forEach((element) => {
-    element.addEventListener('click', () => {
-      modalElement.classList.remove('show');
-      modalElement.style = 'display:none';
-      modalWindow.remove();
-    });
-  });
-};
+// const closeModalWindow = (elements, modalElement, modalWindow) => {
+//   const { closeModal } = elements.modalWindowElements.modalControl;
+//   closeModal.forEach((element) => {
+//     element.addEventListener('click', () => {
+//       modalElement.classList.remove('show');
+//       modalElement.style = 'display:none';
+//       modalWindow.remove();
+//     });
+//   });
+// };
 
-const modalWindowRender = (elements, normalizedData, i18Instance) => {
-  const { modalHeader, modalBody } = elements.modalWindowElements;
-  const { fullArticle } = elements.modalWindowElements.modalControl;
-  const modalElementsList = document.querySelectorAll('[data-bs-toggle="modal"]');
-  const closeArticleWindowButton = fullArticle.nextElementSibling;
-  fullArticle.textContent = i18Instance.t('buttons.open_article');
-  closeArticleWindowButton.textContent = i18Instance.t('buttons.close_article');
-  const modalWindow = document.createElement('div');
-  modalWindow.classList.add('modal-backdrop', 'fade', 'show');
-  modalElementsList.forEach((button) => {
-    button.addEventListener('click', (e) => {
-      const { target } = e;
-      const targetElement = target.previousElementSibling;
-      targetElement.classList.remove('fw-bold');
-      targetElement.classList.add('fw-normal', 'link-secondary');
-      fullArticle.href = targetElement.href;
-      const postId = target.dataset.id;
-      const elementData = normalizedData.posts.find((element) => element.dataId === postId);
-      if (elementData === undefined) {
-        return;
-      }
-      const desription = elementData.description;
-      modalBody.textContent = desription;
-      const header = target.previousElementSibling.textContent;
-      modalHeader.textContent = header;
-      const id = button.dataset.bsTarget;
-      const modalElement = document.querySelector(id);
-      modalElement.classList.add('show');
-      modalElement.style = 'display:block';
-      document.body.append(modalWindow);
-      closeModalWindow(elements, modalElement, modalWindow);
-    });
-  });
-};
+// const modalWindowRender = (elements, normalizedData, i18Instance) => {
+//   const { modalHeader, modalBody } = elements.modalWindowElements;
+//   const { fullArticle } = elements.modalWindowElements.modalControl;
+//   const modalElementsList = document.querySelectorAll('[data-bs-toggle="modal"]');
+//   const closeArticleWindowButton = fullArticle.nextElementSibling;
+//   fullArticle.textContent = i18Instance.t('buttons.open_article');
+//   closeArticleWindowButton.textContent = i18Instance.t('buttons.close_article');
+//   const modalWindow = document.createElement('div');
+//   modalWindow.classList.add('modal-backdrop', 'fade', 'show');
+//   modalElementsList.forEach((button) => {
+//     button.addEventListener('click', (e) => {
+//       const { target } = e;
+//       const targetElement = target.previousElementSibling;
+//       targetElement.classList.remove('fw-bold');
+//       targetElement.classList.add('fw-normal', 'link-secondary');
+//       fullArticle.href = targetElement.href;
+//       const postId = target.dataset.id;
+//       const elementData = normalizedData.posts.find((element) => element.dataId === postId);
+//       if (elementData === undefined) {
+//         return;
+//       }
+//       const desription = elementData.description;
+//       modalBody.textContent = desription;
+//       const header = target.previousElementSibling.textContent;
+//       modalHeader.textContent = header;
+//       const id = button.dataset.bsTarget;
+//       const modalElement = document.querySelector(id);
+//       modalElement.classList.add('show');
+//       modalElement.style = 'display:block';
+//       document.body.append(modalWindow);
+//       // closeModalWindow(elements, modalElement, modalWindow);
+//     });
+//   });
+// };
 
 const postsRender = (normalizedData, elements, i18Instance) => {
   const { postsList } = elements.containers.posts;
   const list = normalizedData.posts.map((post) => {
-    const { dataId } = post;
+    const { id } = post;
     const listElement = document.createElement('li');
     const aElement = document.createElement('a');
     const button = document.createElement('button');
@@ -57,10 +57,10 @@ const postsRender = (normalizedData, elements, i18Instance) => {
     aElement.href = post.link;
     aElement.textContent = post.title;
     aElement.rel = 'noopener noreferrer';
-    aElement.dataset.id = dataId;
+    aElement.dataset.id = id;
     button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
     button.type = 'button';
-    button.dataset.id = dataId;
+    button.id = id;
     button.setAttribute('data-bs-toggle', 'modal');
     button.setAttribute('data-bs-target', '#modal');
     button.textContent = i18Instance.t('buttons.description_window');
@@ -85,4 +85,4 @@ const feedsRender = (normalizeData, elements) => {
   feedsList.append(li);
 };
 
-export default { modalWindowRender, postsRender, feedsRender };
+export default { postsRender, feedsRender };

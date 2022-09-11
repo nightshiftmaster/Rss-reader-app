@@ -3,16 +3,24 @@
 import onChange from 'on-change';
 import renders from './tools/renders';
 
-const { modalWindowRender, postsRender, feedsRender } = renders;
+const { postsRender, feedsRender } = renders;
 
 const validateFormHandler = (status, elements) => (status ? elements.inputField.classList.remove('is-invalid')
   : elements.inputField.classList.add('is-invalid'));
 
 const feedsHandler = (data, elements) => feedsRender(data, elements);
 
-const postsHandler = (data, elements, i18Instance) => {
-  postsRender(data, elements, i18Instance);
-  modalWindowRender(elements, data, i18Instance);
+const postsHandler = (datas, elements, i18Instance) => {
+  postsRender(datas, elements, i18Instance);
+};
+
+const modalWindowHandler = ({ posts }, elements, current) => {
+  const { modal, modalTitle, modalBody } = elements.modalWindow;
+  modal.classList.add('fade', 'show');
+  modal.style.display = 'block';
+  const currPost = posts.find((element) => element.id === current);
+  modalBody.textContent = currPost.description;
+  modalTitle.textContent = currPost.title;
 };
 
 const feedbackMessagesHandler = (elements, message, i18Instance) => {
@@ -58,6 +66,10 @@ const processStateHandler = (elements, process, i18instance) => {
 
 const initView = (state, elements, i18instance) => onChange(state, (path, current) => {
   switch (path) {
+    case 'modal.selectedPostId':
+      modalWindowHandler(state.data.posts, elements, current);
+      break;
+
     case 'form.processState':
       processStateHandler(elements, current, i18instance);
       break;

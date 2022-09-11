@@ -15,13 +15,11 @@ export default () => {
   }).then((t) => {
     t('key');
     const elements = {
-      modalWindowElements: {
-        modalHeader: document.querySelector('.modal-title'),
+      modalWindow: {
+        modal: document.getElementById('modal'),
+        modalTitle: document.querySelector('.modal-title'),
         modalBody: document.querySelector('.modal-body'),
-        modalControl: {
-          closeModal: document.querySelectorAll('[data-bs-dismiss="modal"]'),
-          fullArticle: document.querySelector('.full-article'),
-        },
+        modalCloseButtons: document.querySelectorAll('[data-bs-dismiss="modal"]'),
       },
       containers: {
         posts: {
@@ -52,7 +50,11 @@ export default () => {
         feeds: [],
         posts: [],
       },
+      modal: {
+        selectedPostId: null,
+      },
     };
+
     const watchState = initView(state, elements, i18instance);
     elements.inputField.addEventListener('change', (e) => {
       e.preventDefault();
@@ -65,7 +67,7 @@ export default () => {
             elements.feedbackElement.textContent = '';
             watchState.form.valid = true;
             watchState.form.processState = 'sending';
-            return processData(watchState, data, elements);
+            processData(watchState, data, elements);
           })
           .catch((error) => {
             watchState.form.feedbackMessage = error.message;
@@ -73,5 +75,13 @@ export default () => {
           });
       });
     });
+    elements.containers.posts.postsList.addEventListener('click', (e) => {
+      watchState.modal.selectedPostId = e.target.id;
+    });
+    elements.modalWindow.modalCloseButtons.forEach((modal) => modal.addEventListener('click', () => {
+      elements.modalWindow.modal.style.display = 'none';
+      modal.classList.remove('fade', 'show');
+      state.modal.selectedPostId = null;
+    }));
   });
 };

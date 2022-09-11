@@ -37,7 +37,7 @@ const getNewPosts = (watchState, link, delay) => {
       .then((responce) => {
         const parsedData = parserRss(responce.contents);
         const { posts } = parsedData;
-        watchState.data.posts = { posts };
+        watchState.data.posts = { ...watchState.data.posts, ...posts };
       })
       .catch((err) => {
         watchState.form.processError = errorMessages.network.error;
