@@ -28,7 +28,7 @@ const fetchNewPosts = (watchState) => {
       const finalPosts = _.differenceWith(newPosts, oldPosts, (p1, p2) => p1.title === p2.title)
         .map((post) => ({ ...post, id: _.uniqueId() }));
       watchState.data.posts.unshift(...finalPosts);
-    }).catch((e) => console.error(e));
+    }).catch((error) => console.log(`Error: ${error.message}`));
   });
   return Promise.all(promises).finally(() => {
     setTimeout(() => fetchNewPosts(watchState), 5000);
@@ -37,13 +37,10 @@ const fetchNewPosts = (watchState) => {
 
 export default (watchState, url) => {
   const proxy = addProxy(url);
-  fetch(proxy)
-    .then((responce) => {
-      if (!responce.ok) {
-        throw new Error('netWorkError');
-      }
-      return responce;
-    }).then((responce) => responce.json())
+  fetch(proxy).catch(() => {
+    throw new Error('netWorkError');
+  })
+    .then((responce) => responce.json())
     .then((responce) => {
       const parsedData = parseRss(responce.contents);
       const {
