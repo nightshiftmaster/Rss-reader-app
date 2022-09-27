@@ -9,15 +9,16 @@ Rss Reader is a service for aggregating RSS feeds, with the help of which it is 
 
 [Click here to see an example !](https://frontend-project-lvl3-ceo9d4lb8-nightshiftmaster.vercel.app)
 
-## Setup:
+# Download & Install
 
-```
-make install
-```
+1) [Download or Clone package](https://github.com/nightshiftmaster/frontend-project-lvl3.git)
+3) Install - make install
+4) Compile the package with webpack - make build
+5) Open code with editor browser extension
 
 ## How to use:
 
-1) [Open Rss Reader](https://frontend-project-lvl3-ceo9d4lb8-nightshiftmaster.vercel.app)
+1) [Open Rss Reader](https://frontend-project-lvl3-ceo9d4lb8-nightshiftmaster.vercel.app) 
 2) Insert Rss feed url 
 3) Get a list of current articles & news
 4) Enjoy !

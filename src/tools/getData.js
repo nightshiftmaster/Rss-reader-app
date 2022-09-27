@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
-import parserRss from './parserRss';
+import _ from 'lodash';
+import parseRss from './parserRss';
 
 const feedbackMessages = {
   uploadSuccess: 'feedbacks.upload_success',
@@ -16,39 +17,27 @@ const addProxy = (link) => {
   return urlWithProxy.toString();
 };
 
-const makeFetch = (link) => {
-  const proxy = addProxy(link);
-  return fetch(proxy)
-    .catch(() => {
-      throw new Error('netWorkError');
-    });
+const fetchNewPosts = (watchState) => {
+  const { feeds } = watchState.data;
+  const promises = feeds.map((feed) => {
+    const proxy = addProxy(feed.url);
+    return fetch(proxy).then((responce) => responce.json()).then((responce) => {
+      const parsedData = parseRss(responce.contents);
+      const newPosts = parsedData.posts.map((post) => ({ ...post, channelId: feed.id }));
+      const oldPosts = watchState.data.posts.filter((post) => post.channelId === feed.id);
+      const finalPosts = _.differenceWith(newPosts, oldPosts, (p1, p2) => p1.title === p2.title)
+        .map((post) => ({ ...post, id: _.uniqueId() }));
+      watchState.data.posts.unshift(...finalPosts);
+    }).catch((e) => console.error(e));
+  });
+  return Promise.all(promises).finally(() => {
+    setTimeout(() => fetchNewPosts(watchState), 5000);
+  });
 };
 
-const errorMessages = {
-  network: {
-    error: 'Network Problems. Try again.',
-  },
-};
-
-const getNewPosts = (watchState, link, delay) => {
-  setTimeout(() => {
-    makeFetch(link, watchState)
-      .then((response) => response.json())
-      .then((responce) => {
-        const parsedData = parserRss(responce.contents);
-        const { posts } = parsedData;
-        watchState.data.posts = { ...watchState.data.posts, ...posts };
-      })
-      .catch((err) => {
-        watchState.form.processError = errorMessages.network.error;
-        throw err;
-      });
-    getNewPosts(watchState, link, delay);
-  }, delay);
-};
-
-export default (watchState, value, elements) => {
-  makeFetch(value, watchState)
+export default (watchState, url) => {
+  const proxy = addProxy(url);
+  fetch(proxy)
     .then((responce) => {
       if (!responce.ok) {
         throw new Error('netWorkError');
@@ -56,17 +45,16 @@ export default (watchState, value, elements) => {
       return responce;
     }).then((responce) => responce.json())
     .then((responce) => {
-      const parsedData = parserRss(responce.contents);
-      const { title, description, posts } = parsedData;
-      watchState.data.feeds = { title, description };
-      watchState.data.posts = { posts };
-      watchState.form.currentLink = value;
-      watchState.data.linksHistory.push(value);
+      const parsedData = parseRss(responce.contents);
+      const {
+        title, description, id,
+      } = parsedData;
+      watchState.data.feeds.push({
+        title, description, id, url,
+      });
       watchState.form.processState = 'finished';
       watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
-      getNewPosts(watchState, watchState.form.currentLink, 5000);
-      elements.form.reset();
-      elements.inputField.focus();
+      fetchNewPosts(watchState);
     })
     .catch((error) => {
       watchState.form.feedbackMessage = feedbackMessages[error.message];

@@ -5,43 +5,64 @@ import renders from './tools/renders';
 
 const { postsRender, feedsRender } = renders;
 
-const validateFormHandler = (status, elements) => (status ? elements.inputField.classList.remove('is-invalid')
-  : elements.inputField.classList.add('is-invalid'));
-
-const feedsHandler = (data, elements) => feedsRender(data, elements);
-
-const postsHandler = (datas, elements, i18Instance) => {
-  postsRender(datas, elements, i18Instance);
+const feedsHandler = (data, elements) => {
+  feedsRender(data, elements);
 };
 
-const modalWindowHandler = ({ posts }, elements, current) => {
-  const { modal, modalTitle, modalBody } = elements.modalWindow;
-  modal.classList.add('fade', 'show');
-  modal.style.display = 'block';
-  const currPost = posts.find((element) => element.id === current);
-  modalBody.textContent = currPost.description;
-  modalTitle.textContent = currPost.title;
+const postsHandler = (data, elements, i18Instance, viewedPostsIds) => {
+  postsRender(data, elements, i18Instance, viewedPostsIds);
 };
 
-const feedbackMessagesHandler = (elements, message, i18Instance) => {
+const modalDialogHandler = (postsColl, elements, current, i18Instance) => {
+  const { id, display } = current;
+  const {
+    modal, modalTitle, modalBody, closeArticleButton,
+    openArticleButton,
+  } = elements.modalWindow;
+  modal.style.display = display;
+
+  switch (display) {
+    case 'block': {
+      const element = document.getElementById(id);
+      element.classList.remove('fw-bold');
+      element.classList.add('fw-normal', 'link-secondary');
+      const currentPost = postsColl.find((post) => post.id === id);
+      modal.classList.add('show');
+      openArticleButton.textContent = i18Instance.t('buttons.open_article');
+      closeArticleButton.textContent = i18Instance.t('buttons.close_article');
+      openArticleButton.href = currentPost.url;
+      modalBody.textContent = currentPost.description;
+      modalTitle.textContent = currentPost.title;
+      break;
+    }
+    case 'none':
+      modal.classList.remove('show');
+      break;
+
+    default:
+      break;
+  }
+};
+
+const inputResponseHandler = (elements, message, i18Instance) => {
   const { feedbackElement } = elements;
   if (message !== 'feedbacks.upload_success') {
     feedbackElement.classList.add('text-danger');
     feedbackElement.classList.remove('text-success');
     feedbackElement.textContent = i18Instance.t(message);
+    elements.inputField.classList.add('is-invalid');
   } else {
     feedbackElement.classList.remove('text-danger');
     feedbackElement.classList.add('text-success');
     feedbackElement.textContent = i18Instance.t(message);
+    elements.inputField.classList.remove('is-invalid');
+    elements.form.reset();
+    elements.inputField.focus();
   }
 };
 
 const processStateHandler = (elements, process, i18instance) => {
   const { submitButton } = elements;
-  const { postsColumn } = elements.containers.posts;
-  const { feedsColumn } = elements.containers.feeds;
-  const postContainerTitle = postsColumn.querySelector('h2');
-  const feedsContainerTitle = feedsColumn.querySelector('h2');
   switch (process) {
     case 'filling':
       submitButton.disabled = false;
@@ -52,11 +73,11 @@ const processStateHandler = (elements, process, i18instance) => {
       break;
 
     case 'finished':
-      postContainerTitle.textContent = i18instance.t('containers.postsContainer_title');
-      feedsContainerTitle.textContent = i18instance.t('containers.feedsContainer_title');
+      document.querySelector('.posts h2').textContent = i18instance.t('containers.postsContainer_title');
+      document.querySelector('.feeds h2').textContent = i18instance.t('containers.feedsContainer_title');
       submitButton.disabled = false;
-      postsColumn.hidden = false;
-      feedsColumn.hidden = false;
+      document.querySelector('.posts').hidden = false;
+      document.querySelector('.feeds').hidden = false;
       break;
 
     default:
@@ -66,8 +87,8 @@ const processStateHandler = (elements, process, i18instance) => {
 
 const initView = (state, elements, i18instance) => onChange(state, (path, current) => {
   switch (path) {
-    case 'modal.selectedPostId':
-      modalWindowHandler(state.data.posts, elements, current);
+    case 'modal.currentPostAttributes':
+      modalDialogHandler(state.data.posts, elements, current, i18instance);
       break;
 
     case 'form.processState':
@@ -75,7 +96,7 @@ const initView = (state, elements, i18instance) => onChange(state, (path, curren
       break;
 
     case 'form.feedbackMessage':
-      feedbackMessagesHandler(elements, current, i18instance);
+      inputResponseHandler(elements, current, i18instance);
       break;
 
     case 'data.feeds':
@@ -83,15 +104,11 @@ const initView = (state, elements, i18instance) => onChange(state, (path, curren
       break;
 
     case 'data.posts':
-      postsHandler(current, elements, i18instance);
+      postsHandler(current, elements, i18instance, state.data.viewedPostsIds);
       break;
 
     case 'form.processError':
       console.log(current);
-      break;
-
-    case 'form.valid':
-      validateFormHandler(current, elements);
       break;
 
     default:

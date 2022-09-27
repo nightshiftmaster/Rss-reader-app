@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from 'i18next';
 import resources from './locales/index';
 import initView from './view';
-import processData from './tools/getData';
+import loadRss from './tools/getData';
 import validate from './tools/validator';
 
 export default () => {
@@ -19,18 +19,14 @@ export default () => {
         modal: document.getElementById('modal'),
         modalTitle: document.querySelector('.modal-title'),
         modalBody: document.querySelector('.modal-body'),
-        modalCloseButtons: document.querySelectorAll('[data-bs-dismiss="modal"]'),
+        openArticleButton: document.querySelector('.full-article'),
+        closeArticleButton: document.querySelector('.modal-footer .btn-secondary'),
       },
-      containers: {
-        posts: {
-          postsColumn: document.querySelector('.posts'),
-          postsList: document.querySelector('.posts .list-group'),
-        },
-        feeds: {
-          feedsColumn: document.querySelector('.feeds'),
-          feedsList: document.querySelector('.feeds .list-group'),
-        },
-      },
+
+      postsContainer: document.querySelector('.posts .list-group'),
+
+      feedsContainer: document.querySelector('.feeds .list-group'),
+
       form: document.querySelector('form'),
       submitButton: document.querySelector('[type="submit"]'),
       inputField: document.querySelector('input'),
@@ -41,47 +37,50 @@ export default () => {
       form: {
         processState: 'filling',
         feedbackMessage: '',
-        currentLink: '',
         processError: '',
-        valid: null,
       },
       data: {
-        linksHistory: [],
         feeds: [],
         posts: [],
+        viewedPostsIds: [],
       },
       modal: {
-        selectedPostId: null,
+        currentPostAttributes: {},
       },
     };
 
     const watchState = initView(state, elements, i18instance);
-    elements.inputField.addEventListener('change', (e) => {
-      e.preventDefault();
-      const { value } = e.target;
-      elements.form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        validate(value, watchState)
-          .then((data) => {
-            watchState.form.feedbackMessage = '';
-            elements.feedbackElement.textContent = '';
-            watchState.form.valid = true;
-            watchState.form.processState = 'sending';
-            processData(watchState, data, elements);
-          })
-          .catch((error) => {
-            watchState.form.feedbackMessage = error.message;
-            watchState.form.valid = false;
-          });
-      });
+    elements.form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const inputValue = formData.get('url');
+      validate(inputValue, watchState)
+        .then((data) => {
+          watchState.form.feedbackMessage = '';
+          watchState.form.processState = 'sending';
+          loadRss(watchState, data, elements);
+        })
+        .catch((error) => {
+          watchState.form.feedbackMessage = error.message;
+        });
     });
-    elements.containers.posts.postsList.addEventListener('click', (e) => {
-      watchState.modal.selectedPostId = e.target.id;
+    document.querySelector('.posts').addEventListener('click', (event) => {
+      const openAttributes = { id: event.target.id, display: 'block' };
+      const closeAttributes = { id: null, display: 'none' };
+      switch (event.target.className) {
+        case ('btn-close close'):
+          watchState.modal.currentPostAttributes = closeAttributes;
+          break;
+        case ('btn btn-secondary'):
+          watchState.modal.currentPostAttributes = closeAttributes;
+          break;
+        case ('btn btn-outline-primary btn-sm'):
+          watchState.data.viewedPostsIds.push(event.target.previousElementSibling.id);
+          watchState.modal.currentPostAttributes = openAttributes;
+          break;
+        default:
+          break;
+      }
     });
-    elements.modalWindow.modalCloseButtons.forEach((modal) => modal.addEventListener('click', () => {
-      elements.modalWindow.modal.style.display = 'none';
-      modal.classList.remove('fade', 'show');
-      state.modal.selectedPostId = null;
-    }));
   });
 };
