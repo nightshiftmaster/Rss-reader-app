@@ -9,18 +9,18 @@ Rss Reader is a service for aggregating RSS feeds, with the help of which it is 
 
 [Click here to see an example !](https://frontend-project-lvl3-ceo9d4lb8-nightshiftmaster.vercel.app)
 
-# Clone package 
+## Clone package 
 
 ```sh
 $ git clone https://github.com/nightshiftmaster/frontend-project-lvl3.git
 ```
 
-# Install - make install
+## Install 
 
 ```sh
 $ make install
 ```
-# Compile the package with webpack 
+## Compile the package with webpack 
 
 ```sh
 $ make build
