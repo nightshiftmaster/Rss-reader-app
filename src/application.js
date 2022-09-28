@@ -4,16 +4,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from 'i18next';
 import resources from './locales/index';
 import initView from './view';
-import loadRss from './tools/getData';
+import loaders from './tools/getData';
 import validate from './tools/validator';
+
+const { fetchNewPosts, loadRss } = loaders;
 
 export default () => {
   const i18instance = i18n.createInstance();
   i18instance.init({
-    lng: 'ru',
+    lng: 'en',
     resources,
-  }).then((t) => {
-    t('key');
+  }).then(() => {
     const elements = {
       modalWindow: {
         modal: document.getElementById('modal'),
@@ -50,6 +51,7 @@ export default () => {
     };
 
     const watchState = initView(state, elements, i18instance);
+    fetchNewPosts(watchState);
     elements.form.addEventListener('submit', (event) => {
       event.preventDefault();
       const formData = new FormData(event.target);

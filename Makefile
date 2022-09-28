@@ -2,12 +2,7 @@ install:
 	  npm ci
 
 build: 
-	  npm run build 
+	  npx webpack serve 
 
 lint:
 	  npx eslint .
-
-push:
-	  git add .
-	  git commit -m 'update'
-	  git push

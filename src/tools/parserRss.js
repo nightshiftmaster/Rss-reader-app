@@ -1,20 +1,15 @@
-import _ from 'lodash';
-
 const normalizeData = (parsedData) => {
-  const feedId = _.uniqueId();
   const items = [...parsedData.querySelectorAll('item')];
   return {
     title: parsedData.querySelector('title').textContent,
     description: parsedData.querySelector('description').textContent,
     url: parsedData.querySelector('link').textContent,
-    id: feedId,
     posts: items.reduce((acc, item) => {
       const title = item.querySelector('title').textContent;
-      const id = _.uniqueId();
       const description = item.querySelector('description').textContent;
       const url = item.querySelector('link').textContent;
       acc.push({
-        title, description, channelId: feedId, id, url,
+        title, description, url,
       });
       return acc;
     }, []),

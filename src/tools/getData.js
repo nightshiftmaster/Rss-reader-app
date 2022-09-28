@@ -35,7 +35,7 @@ const fetchNewPosts = (watchState) => {
   });
 };
 
-export default (watchState, url) => {
+const loadRss = (watchState, url) => {
   const proxy = addProxy(url);
   fetch(proxy).catch(() => {
     throw new Error('netWorkError');
@@ -44,14 +44,13 @@ export default (watchState, url) => {
     .then((responce) => {
       const parsedData = parseRss(responce.contents);
       const {
-        title, description, id,
+        title, description,
       } = parsedData;
       watchState.data.feeds.push({
-        title, description, id, url,
+        title, description, url, id: _.uniqueId(),
       });
       watchState.form.processState = 'finished';
       watchState.form.feedbackMessage = feedbackMessages.uploadSuccess;
-      fetchNewPosts(watchState);
     })
     .catch((error) => {
       watchState.form.feedbackMessage = feedbackMessages[error.message];
@@ -59,3 +58,5 @@ export default (watchState, url) => {
       console.log(`Error: ${error.message}`);
     });
 };
+
+export default { fetchNewPosts, loadRss };

@@ -5,14 +5,6 @@ import renders from './tools/renders';
 
 const { postsRender, feedsRender } = renders;
 
-const feedsHandler = (data, elements) => {
-  feedsRender(data, elements);
-};
-
-const postsHandler = (data, elements, i18Instance, viewedPostsIds) => {
-  postsRender(data, elements, i18Instance, viewedPostsIds);
-};
-
 const modalDialogHandler = (postsColl, elements, current, i18Instance) => {
   const { id, display } = current;
   const {
@@ -100,11 +92,11 @@ const initView = (state, elements, i18instance) => onChange(state, (path, curren
       break;
 
     case 'data.feeds':
-      feedsHandler(current, elements);
+      feedsRender(current, elements);
       break;
 
     case 'data.posts':
-      postsHandler(current, elements, i18instance, state.data.viewedPostsIds);
+      postsRender(current, elements, i18instance, state.data.viewedPostsIds);
       break;
 
     case 'form.processError':
