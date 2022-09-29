@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
 import onChange from 'on-change';
 import renders from './tools/renders';
@@ -65,9 +64,9 @@ const processStateHandler = (elements, process, i18instance) => {
       break;
 
     case 'finished':
+      submitButton.disabled = false;
       document.querySelector('.posts h2').textContent = i18instance.t('containers.postsContainer_title');
       document.querySelector('.feeds h2').textContent = i18instance.t('containers.feedsContainer_title');
-      submitButton.disabled = false;
       document.querySelector('.posts').hidden = false;
       document.querySelector('.feeds').hidden = false;
       break;
@@ -97,10 +96,6 @@ const initView = (state, elements, i18instance) => onChange(state, (path, curren
 
     case 'data.posts':
       postsRender(current, elements, i18instance, state.data.viewedPostsIds);
-      break;
-
-    case 'form.processError':
-      console.log(current);
       break;
 
     default:
