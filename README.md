@@ -23,7 +23,7 @@ $ make install
 ## Compile the package with webpack 
 
 ```sh
-$ make build
+$ npx webpack serve
 ```
 
 ## How to use:

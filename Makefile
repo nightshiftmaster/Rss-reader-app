@@ -2,7 +2,7 @@ install:
 	  npm ci
 
 build: 
-	  npx webpack serve 
+	  npm run build  
 
 lint:
 	  npx eslint .
