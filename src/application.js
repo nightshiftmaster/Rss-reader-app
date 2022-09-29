@@ -12,7 +12,7 @@ const { fetchNewPosts, loadRss } = loaders;
 export default () => {
   const i18instance = i18n.createInstance();
   i18instance.init({
-    lng: 'en',
+    lng: 'ru',
     resources,
   }).then(() => {
     const elements = {

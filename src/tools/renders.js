@@ -1,6 +1,4 @@
 /* eslint-disable no-unused-expressions */
-/* eslint-disable no-param-reassign */
-
 const postsRender = (data, elements, i18Instance, viewedPostsIds) => {
   const list = data.map((post) => {
     const listElement = document.createElement('li');

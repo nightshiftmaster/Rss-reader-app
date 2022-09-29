@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "rss agregator",
+  "description": "Rss Reader is a service for aggregating RSS feeds",
   "main": "index.js",
   "scripts": {
     "watch": "webpack --watch",

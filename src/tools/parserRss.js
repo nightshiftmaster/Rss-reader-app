@@ -4,15 +4,12 @@ const normalizeData = (parsedData) => {
     title: parsedData.querySelector('title').textContent,
     description: parsedData.querySelector('description').textContent,
     url: parsedData.querySelector('link').textContent,
-    posts: items.reduce((acc, item) => {
+    posts: items.map((item) => {
       const title = item.querySelector('title').textContent;
       const description = item.querySelector('description').textContent;
       const url = item.querySelector('link').textContent;
-      acc.push({
-        title, description, url,
-      });
-      return acc;
-    }, []),
+      return { title, description, url };
+    }),
   };
 };
 
