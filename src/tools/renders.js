@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-expressions */
-const postsRender = (data, elements, i18Instance, viewedPostsIds) => {
+export const postsRender = (data, elements, i18Instance, viewedPostsIds) => {
   const list = data.map((post) => {
     const listElement = document.createElement('li');
     const aElement = document.createElement('a');
     const button = document.createElement('button');
     listElement.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
-    viewedPostsIds.includes(post.id) ? aElement.classList.add('fw-normal', 'link-secondary') : aElement.classList.add('fw-bold');
+    viewedPostsIds.has(post.id) ? aElement.classList.add('fw-normal', 'link-secondary') : aElement.classList.add('fw-bold');
     aElement.href = post.url;
     aElement.id = post.id;
     aElement.textContent = post.title;
@@ -23,7 +23,7 @@ const postsRender = (data, elements, i18Instance, viewedPostsIds) => {
   elements.postsContainer.replaceChildren(...list);
 };
 
-const feedsRender = (feeds, elements) => {
+export const feedsRender = (feeds, elements) => {
   const li = document.createElement('li');
   li.classList.add('list-group-item', 'border-0', 'border-end-0');
   const header = document.createElement('h3');
@@ -37,4 +37,3 @@ const feedsRender = (feeds, elements) => {
     return elements.feedsContainer.append(li);
   });
 };
-export default { postsRender, feedsRender };

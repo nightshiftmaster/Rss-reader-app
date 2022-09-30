@@ -1,37 +1,27 @@
 /* eslint-disable no-console */
 import onChange from 'on-change';
-import renders from './tools/renders';
+import { postsRender, feedsRender } from './tools';
 
-const { postsRender, feedsRender } = renders;
-
-const modalDialogHandler = (postsColl, elements, current, i18Instance) => {
-  const { id, display } = current;
+const modalDialogHandler = (postsColl, elements, currentId, i18Instance) => {
   const {
     modal, modalTitle, modalBody, closeArticleButton,
     openArticleButton,
-  } = elements.modalWindow;
-  modal.style.display = display;
-
-  switch (display) {
-    case 'block': {
-      const element = document.getElementById(id);
-      element.classList.remove('fw-bold');
-      element.classList.add('fw-normal', 'link-secondary');
-      const currentPost = postsColl.find((post) => post.id === id);
-      modal.classList.add('show');
-      openArticleButton.textContent = i18Instance.t('buttons.open_article');
-      closeArticleButton.textContent = i18Instance.t('buttons.close_article');
-      openArticleButton.href = currentPost.url;
-      modalBody.textContent = currentPost.description;
-      modalTitle.textContent = currentPost.title;
-      break;
-    }
-    case 'none':
-      modal.classList.remove('show');
-      break;
-
-    default:
-      break;
+  } = elements;
+  if (currentId) {
+    const postElement = document.getElementById(currentId);
+    postElement.classList.remove('fw-bold');
+    postElement.classList.add('fw-normal', 'link-secondary');
+    modal.classList.add('show');
+    modal.style.display = 'block';
+    const currentPost = postsColl.find((post) => post.id === currentId);
+    openArticleButton.textContent = i18Instance.t('buttons.open_article');
+    closeArticleButton.textContent = i18Instance.t('buttons.close_article');
+    openArticleButton.href = currentPost.url;
+    modalBody.textContent = currentPost.description;
+    modalTitle.textContent = currentPost.title;
+  } else {
+    modal.classList.remove('show');
+    modal.style.display = 'none';
   }
 };
 
@@ -53,7 +43,7 @@ const inputResponseHandler = (elements, message, i18Instance) => {
 };
 
 const processStateHandler = (elements, process, i18instance) => {
-  const { submitButton } = elements;
+  const { submitButton, posts, feeds } = elements;
   switch (process) {
     case 'filling':
       submitButton.disabled = false;
@@ -67,8 +57,8 @@ const processStateHandler = (elements, process, i18instance) => {
       submitButton.disabled = false;
       document.querySelector('.posts h2').textContent = i18instance.t('containers.postsContainer_title');
       document.querySelector('.feeds h2').textContent = i18instance.t('containers.feedsContainer_title');
-      document.querySelector('.posts').hidden = false;
-      document.querySelector('.feeds').hidden = false;
+      posts.hidden = false;
+      feeds.hidden = false;
       break;
 
     default:
@@ -78,7 +68,7 @@ const processStateHandler = (elements, process, i18instance) => {
 
 const initView = (state, elements, i18instance) => onChange(state, (path, current) => {
   switch (path) {
-    case 'modal.currentPostAttributes':
+    case 'modal.currentPostId':
       modalDialogHandler(state.data.posts, elements, current, i18instance);
       break;
 

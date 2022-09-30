@@ -17,7 +17,7 @@ const addProxy = (link) => {
   return urlWithProxy.toString();
 };
 
-const fetchNewPosts = (watchState) => {
+export const fetchNewPosts = (watchState) => {
   const { feeds } = watchState.data;
   const promises = feeds.map((feed) => {
     const proxy = addProxy(feed.url);
@@ -35,7 +35,7 @@ const fetchNewPosts = (watchState) => {
   });
 };
 
-const loadRss = (watchState, url) => {
+export const loadRss = (watchState, url) => {
   const proxy = addProxy(url);
   fetch(proxy).catch(() => {
     throw new Error('netWorkError');
@@ -58,5 +58,3 @@ const loadRss = (watchState, url) => {
       console.log(`Error: ${error.message}`);
     });
 };
-
-export default { fetchNewPosts, loadRss };
