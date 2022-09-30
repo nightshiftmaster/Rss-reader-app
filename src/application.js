@@ -2,7 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from 'i18next';
 import resources from './locales/index';
 import initView from './view';
-import { validate, fetchNewPosts, loadRss } from './tools';
+import validate from './tools/validator';
+import { fetchNewPosts, loadRss } from './tools/getData';
 
 export default () => {
   const i18instance = i18n.createInstance();
