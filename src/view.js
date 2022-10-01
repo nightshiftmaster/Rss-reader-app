@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import onChange from 'on-change';
-import { postsRender, feedsRender } from './tools/renders';
+import { postsRender, feedsRender } from './tools';
 
 const modalDialogHandler = (postsColl, elements, currentId, i18Instance) => {
   const {
